@@ -188,3 +188,66 @@ a.custom-card:hover {
 .checked {
   color: orange;
 }
+
+/* ESTILOS DEL LOGIN*/
+#login-form {
+  background-color: rgba(235, 231, 231);
+  padding: 50px;
+  border-radius: 50px;
+  box-shadow: 0 0 40px 0 rgb(66, 66, 66);
+  width: 650px;
+  height: 500px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+/* TITULO FORMULARIO*/
+#login-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* CAMPOS INPUT*/
+#login-form input[type="text"],
+#login-form input[type="password"] {
+  width: 70%;
+  padding: 12px;
+  margin-bottom: 12px;
+  margin-top: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #B9B3B3;
+
+}
+
+/* BOTON LOGIN */
+#login-form input[type="submit"] {
+  background-color: #F2DD1B;
+  /* Yellow Color */
+  color: white;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* EFECTO HOVER BOTON */
+#login-form input[type="submit"]:hover {
+  background-color: #e0a800;
+  /* Darker Yellow on Hover */
+}
+
+/* MENSAJE DE ERROR*/
+#login-form .error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+#bodylogin {
+  background-image: url('../img/Backgroundimage.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  height: 100vh;
+}

@@ -39,3 +39,26 @@ let getJSONData = function(url){
         return result;
     });
 }
+// agregue funcion que redireccione al sitio portada cuando se presiona INGRESAR
+// en el caso de no completar un campo le sale el alert de abajo
+const form = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (username === '' || password === '') {
+        errorMessage.textContent = 'Por favor, ingrese ambos campos';
+      } else {
+        // Autenticación ficticia, siempre devuelve true
+        const isValid = true;
+
+        if (isValid) {
+          window.location.href = 'index.html'; // Redireccionar a la página de portada
+        } else {
+          errorMessage.textContent = 'Credenciales inválidas';
+        }
+      }
+    });
