@@ -189,6 +189,50 @@ a.custom-card:hover {
   color: orange;
 }
 
+/*producto*/
+#container {
+  flex-direction: column;
+  gap: 20px;
+}
+.product {
+  
+    display: flex;
+   
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.product img {
+    width: 250px;
+    height: auto;
+    margin-right: 20px;
+   
+}
+
+.product-info h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.product p {
+    margin: 5px;
+    font-size: 18px;
+    color: black;
+}
+
+.cantidad-vendidos {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.cantidad-vendidos p {
+  
+  font-size: 18px;
+  color: black;
+}
+
 /* ESTILOS DEL LOGIN*/
 #login-form {
   background-color: rgba(235, 231, 231);
