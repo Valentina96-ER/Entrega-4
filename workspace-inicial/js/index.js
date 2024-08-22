@@ -12,3 +12,13 @@ document.addEventListener("DOMContentLoaded", function(){
         window.location = "products.html"
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = 'login.html';
+    }
+});
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = 'login.html';
+});
