@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function() {
     // Carga de productos desde la API
     fetch('https://japceibal.github.io/emercado-api/cats_products/101.json')
@@ -39,3 +38,4 @@ function showData(products) {
 function formatNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
+
