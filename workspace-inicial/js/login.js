@@ -8,6 +8,10 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     // Este es solo un ejemplo simple
     if (username !== "" && password !== "") {
         localStorage.setItem('isLoggedIn', 'true');
-        window.location.href = 'portada.html';
+        window.location.href = 'index.html';
+        } else {
+        let errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = 'Por favor, ingrese ambos campos';
     }
+
 });
