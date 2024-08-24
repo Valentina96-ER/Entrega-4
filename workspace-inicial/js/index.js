@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function(){
         window.location = "products.html"
     });
 });
+
 //desafiate
 document.addEventListener('DOMContentLoaded', function() {
     if (localStorage.getItem('isLoggedIn') !== 'true') {

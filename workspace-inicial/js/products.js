@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // Código implementado por Sofía, con pequeñas modificaciones para integración
 function showData(products) {
     const container = document.getElementById("container"); // Usando el ID "container" para coherencia con el diseño existente
-    container.innerHTML = ''; // Limpiar contenido anterior para asegurar que no hay duplicados al recargar
+    container.innerHTML = ''; // Se limpia el contenido anterior para asegurar que no hay duplicados al recargar
     products.forEach(product => {
       const formattedCost = formatNumber(product.cost); // Formateo del costo incluido para mejorar la legibilidad
       const productHTML = `
@@ -20,12 +20,12 @@ function showData(products) {
             <img src="${product.image}" class="img-fluid" alt="${product.name}">
           </div>
           <div class="col-md-6">
-            <h5>${product.name}</h5>
+            <h4><strong>${product.name}</strong></h4>
             <p>${product.description}</p>
-            <p><strong>Precio:</strong> ${product.currency} ${formattedCost}</p>
+            <p>Precio: ${product.currency} ${formattedCost}</p>
           </div>
           <div class="col-md-3">
-            <p><strong>Cantidad de vendidos:</strong> ${product.soldCount}</p>
+            <p>Cantidad de vendidos: ${product.soldCount}</p>
           </div>
         </div>`;
       container.innerHTML += productHTML; // Agregar el producto al contenedor
@@ -38,3 +38,4 @@ function showData(products) {
 function formatNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
+

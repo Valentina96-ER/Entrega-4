@@ -13,5 +13,4 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         let errorMessage = document.getElementById('error-message');
         errorMessage.textContent = 'Por favor, ingrese ambos campos';
     }
-
 });
