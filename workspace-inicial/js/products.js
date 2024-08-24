@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function() {
     // Carga de productos desde la API
     fetch('https://japceibal.github.io/emercado-api/cats_products/101.json')
