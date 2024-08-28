@@ -22,10 +22,10 @@ function showData(products) {
           <div class="col-md-6">
             <h4><strong>${product.name}</strong></h4>
             <p>${product.description}</p>
-            <p>Precio: ${product.currency} ${formattedCost}</p>
+            <p><span class="precioCompleto"><span class="etPrecio">Precio:</span> ${product.currency} ${formattedCost}</span></p>
           </div>
           <div class="col-md-3">
-            <p>Cantidad de vendidos: ${product.soldCount}</p>
+            <p><span class="etVendidos">Cantidad de vendidos:</span> <span class= "cantVend"> ${product.soldCount}</span></p>
           </div>
         </div>`;
       container.innerHTML += productHTML; // Agregar el producto al contenedor

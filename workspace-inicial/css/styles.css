@@ -289,7 +289,7 @@ a.custom-card:hover {
   #login-form {
     margin-top: 12em;
     width: 530px;
-    height: 560px;
+    height: 580px;
     border-radius: 80px;
   }
   #login-form input[type="text"],
@@ -331,7 +331,7 @@ h1{
   #login-form{
     width: 250px;
     padding: 20px;
-    height: 280px;
+    height: 300px;
     margin-top: 6em;
     border-radius: 35px;
   }
@@ -354,7 +354,7 @@ h1{
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 .container{
 font-size: 9px;
@@ -367,6 +367,27 @@ h1{
 #login-form label{
   font-size: 12px;
 }
+.col-md-6 p{
+  font-size: 160%;
 }
+.col-md-3 p{
+  font-size: 160%;
+}
+.etPrecio {
+  display: none;
+}
+.precioCompleto{
+  font-size: 170%;
+}
+}
+
+
+
+
+
+
+
+
+
 
 
