@@ -39,3 +39,21 @@ function formatNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+  updateTextContent(); 
+  window.addEventListener('resize', updateTextContent); 
+});
+
+function updateTextContent() {
+  const VendidoEtiqueta = document.querySelectorAll('.etVendidos');
+  const PrecioEtiqueta = document.querySelectorAll('.etPrecio');
+
+  if (window.innerWidth <= 350) { 
+      VendidoEtiqueta.forEach(label => label.textContent = 'Vendidos:'); 
+      PrecioEtiqueta.forEach(label => label.style.display = 'none'); 
+  } else {
+      VendidoEtiqueta.forEach(label => label.textContent = 'Cantidad de vendidos:'); 
+      PrecioEtiqueta.forEach(label => label.style.display = 'inline'); 
+  }
+}
+
