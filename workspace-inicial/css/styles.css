@@ -22,12 +22,6 @@ nav a {
   user-select: none;
 }
 
-@media (min-width: 768px) {
-  .bd-placeholder-img-lg {
-    font-size: 3.5rem;
-  }
-}
-
 .jumbotron {
   height: 50vh;
   padding: 5em inherit;
@@ -41,13 +35,6 @@ nav a {
   font-weight: bold;
 }
 
-@media (min-width: 768px) {
-  .jumbotron {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-}
-
 .jumbotron p:last-child {
   margin-bottom: 0;
 }
@@ -57,7 +44,9 @@ nav a {
 }
 
 .jumbotron .container {
-  max-width: 40rem;
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   text-shadow: 1px 1px 2px grey;
@@ -295,3 +284,89 @@ a.custom-card:hover {
   background-size: 100% auto;
   height: 100vh;
 }
+@media (max-width: 1024px) {
+  /* Esto es la pagina en tamaño tableta */
+  #login-form {
+    margin-top: 12em;
+    width: 530px;
+    height: 560px;
+    border-radius: 80px;
+  }
+  #login-form input[type="text"],
+#login-form input[type="password"] {
+  width: 75%;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #B9B3B3;
+
+}
+#login-form input[type="submit"] {
+  background-color: #F2DD1B;
+  /* Yellow Color */
+  color: white;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.container{
+font-size: 20px;
+}
+h1{
+  font-size: 40px;
+  margin-bottom: 50px;
+  padding-bottom: 20px;
+}
+#login-form label{
+  font-size: 20px;
+}
+
+}
+@media (max-width: 568px) {
+  /* Esta es la pagina en tamaño celular*/
+  #login-form{
+    width: 250px;
+    padding: 20px;
+    height: 280px;
+    margin-top: 6em;
+    border-radius: 35px;
+  }
+  #login-form input[type="text"],
+#login-form input[type="password"] {
+  width: 100%;
+  padding: 2px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #B9B3B3;
+
+}
+#login-form input[type="submit"] {
+  background-color: #F2DD1B;
+  /* Yellow Color */
+  color: white;
+  padding: 4px 35px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+.container{
+font-size: 9px;
+}
+h1{
+  font-size: 20px;
+  margin-bottom: 12px;
+  padding-bottom: 0px;
+}
+#login-form label{
+  font-size: 12px;
+}
+}
+
+
