@@ -63,6 +63,7 @@ footer {
 
 footer p {
   margin-bottom: .25rem;
+  display: flex;
 }
 
 .site-header a {
