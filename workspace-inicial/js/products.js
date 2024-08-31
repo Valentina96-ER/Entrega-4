@@ -22,10 +22,10 @@ function showData(products) {
           <div class="col-md-6">
             <h4><strong>${product.name}</strong></h4>
             <p>${product.description}</p>
-            <p>Precio: ${product.currency} ${formattedCost}</p>
+            <p><span class="etPrecio">Precio:</span><span class="PrecioCompleto"> ${product.currency} ${formattedCost}</span></p>
           </div>
           <div class="col-md-3">
-            <p>Cantidad de vendidos: ${product.soldCount}</p>
+            <p><span class="etVendidos">Cantidad de vendidos:</span>${product.soldCount}</p>
           </div>
         </div>`;
       container.innerHTML += productHTML; // Agregar el producto al contenedor
@@ -37,5 +37,23 @@ function showData(products) {
 // Código realizado por el equipo para mejorar la presentación de precios
 function formatNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  updateTextContent(); 
+  window.addEventListener('resize', updateTextContent); 
+});
+
+function updateTextContent() {
+  const VendidoEtiqueta = document.querySelectorAll('.etVendidos');
+  const PrecioEtiqueta = document.querySelectorAll('.etPrecio');
+
+  if (window.innerWidth <= 350) { 
+      VendidoEtiqueta.forEach(label => label.textContent = 'Vendidos:'); 
+      PrecioEtiqueta.forEach(label => label.style.display = 'none'); 
+  } else {
+      VendidoEtiqueta.forEach(label => label.textContent = 'Cantidad de vendidos:'); 
+      PrecioEtiqueta.forEach(label => label.style.display = 'inline'); 
+  }
 }
 
