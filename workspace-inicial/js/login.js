@@ -9,6 +9,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     if (username !== "" && password !== "") {
         localStorage.setItem('isLoggedIn', 'true');
         window.location.href = 'index.html';
+        localStorage.setItem('username', username);
         } else {
         let errorMessage = document.getElementById('error-message');
         errorMessage.textContent = 'Por favor, ingrese ambos campos';
