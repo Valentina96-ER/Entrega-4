@@ -110,7 +110,7 @@ function formatNumber(number) {
 
 function setProductID(id) {
   localStorage.setItem("productID", id);
-  window.location = "products-info.html"
+  window.location = "product-info.html"
 }
 
 
