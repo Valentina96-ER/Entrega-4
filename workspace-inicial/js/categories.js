@@ -41,13 +41,16 @@ function setCatID(id) {
 }
 
 function showCategoriesList(){
-
+    let searchInput = document.getElementById("searchInput").value.toLowerCase();
     let htmlContentToAppend = "";
+
     for(let i = 0; i < currentCategoriesArray.length; i++){
         let category = currentCategoriesArray[i];
 
-        if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
-            ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){
+        // Filtro por rango de productos y por texto ingresado en el buscador
+        if ((category.name.toLowerCase().includes(searchInput) || category.description.toLowerCase().includes(searchInput)) &&
+            ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount)) &&
+            ((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount))){
 
             htmlContentToAppend += `
             <div onclick="setCatID(${category.id})" class="list-group-item list-group-item-action cursor-active">
@@ -64,11 +67,11 @@ function showCategoriesList(){
                     </div>
                 </div>
             </div>
-            `
+            `;
         }
-
-        document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
     }
+
+    document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
 }
 
 function sortAndShowCategories(sortCriteria, categoriesArray){
@@ -140,4 +143,9 @@ document.addEventListener("DOMContentLoaded", function(e){
 
         showCategoriesList();
     });
+});
+
+  // **agregue el evento de búsqueda en tiempo real**
+  document.getElementById("searchInput").addEventListener("input", function(){
+    showCategoriesList();
 });
