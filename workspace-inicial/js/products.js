@@ -20,14 +20,21 @@ document.getElementById("searchInput").addEventListener("input", function() {
   const searchText = document.getElementById("searchInput").value.toLowerCase();
   
   // Filtrar los productos por coincidencia en nombre o descripción
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchText) || 
-    product.description.toLowerCase().includes(searchText)
-  );
+  // Primero buscar productos que coincidan en el nombre
+let filteredProductsByName = products.filter(product => 
+  product.name.toLowerCase().includes(searchText)
+);
 
-  // Ordenar los productos filtrados por nombre (A-Z)
-  filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+// Luego buscar productos que coincidan en la descripción, excluyendo los que ya coinciden por nombre
+let filteredProductsByDescription = products.filter(product => 
+  product.description.toLowerCase().includes(searchText) &&
+  !filteredProductsByName.includes(product) // Evitar duplicados
+);
 
+// Combinar ambos resultados, priorizando los que coinciden por nombre
+const filteredProducts = [...filteredProductsByName, ...filteredProductsByDescription];
+
+  
   // Mostrar los productos ordenados
   showData(filteredProducts);
 });
