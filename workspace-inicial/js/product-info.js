@@ -23,40 +23,60 @@ function showData(product) {
         const formattedCost = formatNumber(product.cost);  // Formatear el costo
 
         const productInfoHTML = `
-        <div class="container">
-          <div class="row">
-            <!-- Imagen grande del producto -->
-            <div class="col-md-8 mb-4">
-              <img src="${product.images[0]}" class="img-fluid w-100 rounded" alt="${product.name}">
+        <div class="container mt-4">
+            <!-- Nombre de la categoría -->
+            <div class="row">
+            <div class="col-12">
+                <h3><strong>${product.category}</strong></h3>
             </div>
-            <!-- Información del producto -->
-            <div class="col-md-4">
-              <h2><strong>${product.name}</strong></h2>
-              <p>${product.description}</p>
-              <h4>Precio: ${product.currency} ${formattedCost}</h4>
-              <p>Cantidad de vendidos: ${product.soldCount}</p>
             </div>
-          </div>
-      
-          <!-- Mosaico de imágenes adicionales -->
-          <div class="row">
-            ${product.images.slice(1, 4).map(image => `
-              <div class="col-3 mb-2">
-                <img src="${image}" class="img-fluid rounded" alt="${product.name}">
-              </div>
-            `).join('')}
-          </div>
-      
-          <!-- Productos relacionados -->
-          <div class="row mt-4">
-            <h4 class="text-center">Productos relacionados</h4>
-            ${product.relatedProducts.map(related => `
-              <div class="col-6 text-center">
-                <img src="${related.image}" class="img-fluid w-50" alt="${related.name}">
-                <p>${related.name}</p>
-              </div>
-            `).join('')}
-          </div>
+
+            <div class="row">
+            <!-- Columna de imágenes -->
+            <div class="col-md-8 d-flex flex-column justify-content-between">
+                <!-- Imagen grande del producto -->
+                <div class="row mb-4">
+                <div class="col-12">
+                    <img src="${product.images[0]}" class="img-fluid w-100 rounded" alt="${product.name}">
+                </div>
+                </div>
+                <!-- Mosaico de imágenes adicionales -->
+                <div class="row">
+                <div class="col-4">
+                    <img src="${product.images[1]}" class="rounded img-fluid" alt="${product.name}">
+                </div>
+                <div class="col-4">
+                    <img src="${product.images[2]}" class="rounded img-fluid" alt="${product.name}">
+                </div>
+                <div class="col-4">
+                    <img src="${product.images[3]}" class="rounded img-fluid" alt="${product.name}">
+                </div>
+                </div>
+            </div>
+            
+            <!-- Columna de información del producto -->
+            <div class="col-md-4 d-flex flex-column justify-content-between">
+                <div class="row mb-4">
+                <div class="col-12">
+                    <h2><strong>${product.name}</strong></h2>
+                    <p>${product.description}</p>
+                    <h4>Precio: ${product.currency} ${formattedCost}</h4>
+                    <p>Cantidad de vendidos: ${product.soldCount}</p>
+                </div>
+                </div>
+                
+                <!-- Productos relacionados -->
+                <div class="row">
+                <h4 class="text-center">Productos relacionados</h4>
+                ${product.relatedProducts.map(related => `
+                    <div class="col-6 text-center cursor-pointer" onclick="setProductID(${related.id})">
+                    <img src="${related.image}" class="img-fluid w-75" alt="${related.name}">
+                    <p>${related.name}</p>
+                    </div>
+                `).join('')}
+                </div>
+            </div>
+            </div>
         </div>
       `;     
         container.innerHTML += productInfoHTML;
@@ -66,4 +86,9 @@ function showData(product) {
 // Función para formatear el número con puntos
 function formatNumber(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function setProductID(id) {
+  localStorage.setItem("productID", id);
+  window.location = "product-info.html"
 }
