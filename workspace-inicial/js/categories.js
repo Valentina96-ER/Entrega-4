@@ -41,34 +41,71 @@ function setCatID(id) {
 }
 
 function showCategoriesList(){
-
+    let searchInput = document.getElementById("searchInput").value.toLowerCase();
     let htmlContentToAppend = "";
+    let exactMatches = []; // Para almacenar las coincidencias exactas al inicio
+    let partialMatches = []; // Para almacenar las coincidencias parciales
+
     for(let i = 0; i < currentCategoriesArray.length; i++){
         let category = currentCategoriesArray[i];
+        let nameLower = category.name.toLowerCase();
+        let descriptionLower = category.description.toLowerCase();
 
-        if (((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount)) &&
-            ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount))){
+        // Filtro por rango de productos y por texto ingresado en el buscador
+        if ((nameLower.includes(searchInput) || descriptionLower.includes(searchInput)) &&
+            ((maxCount == undefined) || (maxCount != undefined && parseInt(category.productCount) <= maxCount)) &&
+            ((minCount == undefined) || (minCount != undefined && parseInt(category.productCount) >= minCount))){
+            
+            // Si el nombre de la categoría comienza exactamente con el texto de búsqueda, lo agregamos a `exactMatches`
+            if (nameLower.startsWith(searchInput)) {
+                exactMatches.push(category);
+            } else {
+                partialMatches.push(category);
+            }
+        }
+    }
 
-            htmlContentToAppend += `
-            <div onclick="setCatID(${category.id})" class="list-group-item list-group-item-action cursor-active">
-                <div class="row">
-                    <div class="col-3">
-                        <img src="${category.imgSrc}" alt="${category.description}" class="img-thumbnail">
+    // Primero, mostramos las coincidencias exactas
+    exactMatches.forEach(category => {
+        htmlContentToAppend += `
+        <div onclick="setCatID(${category.id})" class="list-group-item list-group-item-action cursor-active">
+            <div class="row">
+                <div class="col-3">
+                    <img src="${category.imgSrc}" alt="${category.description}" class="img-thumbnail">
+                </div>
+                <div class="col">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h4 class="mb-1">${category.name}</h4>
+                        <small class="text-muted">${category.productCount} artículos</small>
                     </div>
-                    <div class="col">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h4 class="mb-1">${category.name}</h4>
-                            <small class="text-muted">${category.productCount} artículos</small>
-                        </div>
-                        <p class="mb-1">${category.description}</p>
-                    </div>
+                    <p class="mb-1">${category.description}</p>
                 </div>
             </div>
-            `
-        }
+        </div>
+        `;
+    });
 
-        document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
-    }
+    // Luego, mostramos las coincidencias parciales
+    partialMatches.forEach(category => {
+        htmlContentToAppend += `
+        <div onclick="setCatID(${category.id})" class="list-group-item list-group-item-action cursor-active">
+            <div class="row">
+                <div class="col-3">
+                    <img src="${category.imgSrc}" alt="${category.description}" class="img-thumbnail">
+                </div>
+                <div class="col">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h4 class="mb-1">${category.name}</h4>
+                        <small class="text-muted">${category.productCount} artículos</small>
+                    </div>
+                    <p class="mb-1">${category.description}</p>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+
+    document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
 }
 
 function sortAndShowCategories(sortCriteria, categoriesArray){
@@ -138,6 +175,11 @@ document.addEventListener("DOMContentLoaded", function(e){
             maxCount = undefined;
         }
 
+        showCategoriesList();
+    });
+
+    // **agregue el evento de búsqueda en tiempo real**
+    document.getElementById("searchInput").addEventListener("input", function(){
         showCategoriesList();
     });
 });
