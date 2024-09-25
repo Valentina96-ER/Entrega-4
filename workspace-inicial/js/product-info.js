@@ -1,17 +1,19 @@
+const productID = localStorage.getItem("productID");
 document.addEventListener("DOMContentLoaded", function () {
-    const productID = localStorage.getItem("productID");
+    
  
     if (productID) {
-      fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
-        .then(response => response.json())
-        .then(data => {
-          const product = data;  // Guardar el producto en una variable
-          console.log(product); // Verificar los productos
-          showData(product);  // Mostrar el producto
-        })
-        .catch(error => console.error('Error al cargar el producto:', error));
+        fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
+            .then(response => response.json())
+            .then(data => {
+                const product = data;  // Guardar el producto en una variable
+                console.log(product); // Verificar los productos
+                showData(product);  // Mostrar el producto
+                fetchRatings();  // Cargar y mostrar las calificaciones
+            })
+            .catch(error => console.error('Error al cargar el producto:', error));
     } else {
-      console.error('No se ha encontrado un productID en el almacenamiento local.');
+        console.error('No se ha encontrado un productID en el almacenamiento local.');
     }
 });
 
@@ -62,11 +64,6 @@ function showData(product) {
                     <p>${product.description}</p>
                     <h4>Precio: ${product.currency} ${formattedCost}</h4>
                     <p>Cantidad de vendidos: ${product.soldCount}</p>
-                     <!-- Sección de calificaciones -->
-                    <div class="container mt-4" id="ratings-container">
-                    <h4>Calificaciones de los usuarios</h4>
-                    <div id="ratings"></div>
-                </div> 
                 </div>  
                 </div>
                 
@@ -83,38 +80,75 @@ function showData(product) {
             </div>
             </div>
         </div>
+        <!-- Sección de calificaciones -->
+                    <div class="container mt-4" id="ratings-container">
+                    <h4>Calificaciones de los usuarios</h4>
+                    <div id="ratings"></div>
+                </div> 
         <!-- Formulario para realizar una calificación -->
         <div class="container mt-4">
             <h4>Deja tu calificación</h4>
             <form id="rating-form">
                 <div class="mb-3">
                     <label for="rating-text" class="form-label">Comentario</label>
-                    <textarea class="form-control" id="rating-text" rows="3" required></textarea>
+                    <textarea id="rating-text" class="form-control" rows="3"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="rating-score" class="form-label">Calificación</label>
-                    <select class="form-select" id="rating-score" required>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                    <label for="rating-score" class="form-label">Puntuación</label>
+                    <select id="rating-score" class="form-select">
+                        <option value="1">1 estrella</option>
+                        <option value="2">2 estrellas</option>
+                        <option value="3">3 estrellas</option>
+                        <option value="4">4 estrellas</option>
+                        <option value="5">5 estrellas</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar</button>
             </form>
         </div>
-      `;     
-        container.innerHTML += productInfoHTML;
+        `;
+
+        container.innerHTML = productInfoHTML;
     }
 }
 
-// Función para formatear el número con puntos
-function formatNumber(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+function fetchRatings() {
+    fetch(`https://japceibal.github.io/emercado-api/products_comments/${productID}.json`)
+        .then(response => response.json())
+        .then(data => {
+            const ratingsContainer = document.getElementById('ratings');
+            data.forEach(comentario => {
+                const divComentario = document.createElement('div');
+                divComentario.classList.add('ratings-row');
+
+                // Crear el nombre del usuario
+                const userElement = document.createElement('h5');
+                userElement.textContent = comentario.user;
+                divComentario.appendChild(userElement);
+
+                // Crear las estrellas usando Font Awesome
+                const calificacion = Math.round(comentario.score);
+                for (let i = 0; i < 5; i++) {
+                    const estrella = document.createElement('span');
+                    estrella.classList.add('fa', 'fa-star');
+                    if (i < calificacion) {
+                        estrella.classList.add('checked');
+                    }
+                    divComentario.appendChild(estrella);
+                }
+
+                // Crear el comentario
+                const comentarioElement = document.createElement('p');
+                comentarioElement.textContent = comentario.description;
+                divComentario.appendChild(comentarioElement);
+                
+
+                ratingsContainer.appendChild(divComentario);
+            });
+        })
+        .catch(error => console.error('Error al cargar las calificaciones:', error));
 }
 
-function setProductID(id) {
-  localStorage.setItem("productID", id);
-  window.location = "product-info.html"
+function formatNumber(num) {
+    return num.toLocaleString('es-ES');
 }
