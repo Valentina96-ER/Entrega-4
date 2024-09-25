@@ -198,6 +198,12 @@ function addRatingToDOM(rating) {
     ratingsContainer.appendChild(divComentario);
 }
 
-function formatNumber(num) {
-    return num.toLocaleString('es-ES');
+//Función para formatear el número con puntos
+function formatNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function setProductID(id) {
+  localStorage.setItem("productID", id);
+  window.location = "product-info.html"
 }
