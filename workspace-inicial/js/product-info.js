@@ -62,7 +62,12 @@ function showData(product) {
                     <p>${product.description}</p>
                     <h4>Precio: ${product.currency} ${formattedCost}</h4>
                     <p>Cantidad de vendidos: ${product.soldCount}</p>
-                </div>
+                     <!-- Sección de calificaciones -->
+                    <div class="container mt-4" id="ratings-container">
+                    <h4>Calificaciones de los usuarios</h4>
+                    <div id="ratings"></div>
+                </div> 
+                </div>  
                 </div>
                 
                 <!-- Productos relacionados -->
@@ -77,6 +82,27 @@ function showData(product) {
                 </div>
             </div>
             </div>
+        </div>
+        <!-- Formulario para realizar una calificación -->
+        <div class="container mt-4">
+            <h4>Deja tu calificación</h4>
+            <form id="rating-form">
+                <div class="mb-3">
+                    <label for="rating-text" class="form-label">Comentario</label>
+                    <textarea class="form-control" id="rating-text" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="rating-score" class="form-label">Calificación</label>
+                    <select class="form-select" id="rating-score" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
         </div>
       `;     
         container.innerHTML += productInfoHTML;
