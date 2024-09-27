@@ -61,6 +61,7 @@ function showData(product) {
                 <div class="row mb-4">
                 <div class="col-12">
                     <h2><strong>${product.name}</strong></h2>
+                    <div id="average-stars-container"></div> <!-- Contenedor para estrellas promedio -->
                     <p>${product.description}</p>
                     <h4>Precio: ${product.currency} ${formattedCost}</h4>
                     <p>Cantidad de vendidos: ${product.soldCount}</p>
@@ -81,7 +82,7 @@ function showData(product) {
             </div>
         </div>
         <!-- Sección de calificaciones -->
-                    <div class="container mt-4" id="ratings-container">
+                    
                     <h4>Calificaciones de los usuarios</h4>
                     <div id="ratings"></div>
                 </div> 
@@ -117,6 +118,9 @@ function fetchRatings() {
         .then(response => response.json())
         .then(data => {
             const ratingsContainer = document.getElementById('ratings');
+            let totalScore = 0;  // Variable para almacenar la suma de las calificaciones
+            let numberOfRatings = data.length;  // Número total de calificaciones
+
             data.forEach(comentario => {
                 const divComentario = document.createElement('div');
                 divComentario.classList.add('ratings-row');
@@ -128,6 +132,8 @@ function fetchRatings() {
 
                 // Crear las estrellas usando Font Awesome
                 const calificacion = Math.round(comentario.score);
+                totalScore += calificacion;  // Sumar la calificación al total
+
                 for (let i = 0; i < 5; i++) {
                     const estrella = document.createElement('span');
                     estrella.classList.add('fa', 'fa-star');
@@ -141,13 +147,38 @@ function fetchRatings() {
                 const comentarioElement = document.createElement('p');
                 comentarioElement.textContent = comentario.description;
                 divComentario.appendChild(comentarioElement);
-                
 
                 ratingsContainer.appendChild(divComentario);
             });
+
+            // Calcular el promedio de las calificaciones
+            const averageScore = totalScore / numberOfRatings;
+            renderAverageStars(averageScore);  // Mostrar las estrellas promedio
         })
         .catch(error => console.error('Error al cargar las calificaciones:', error));
 }
+
+// Función para renderizar las estrellas basadas en el promedio
+function renderAverageStars(averageScore) {
+    console.log('Average score:', averageScore);  // Para verificar el promedio de estrellas
+
+    const starsContainer = document.getElementById('average-stars-container');
+    starsContainer.innerHTML = '';  // Limpiar el contenedor antes de añadir nuevas estrellas
+
+    const roundedAverage = Math.round(averageScore);  // Redondear el promedio
+
+    // Crear las estrellas para el promedio
+    for (let i = 0; i < 5; i++) {
+        const estrella = document.createElement('span');
+        estrella.classList.add('fa', 'fa-star');
+        if (i < roundedAverage) {
+            estrella.classList.add('checked');  // Estrella activa
+        }
+        starsContainer.appendChild(estrella);
+    }
+}
+
+
 
 function formatNumber(num) {
     return num.toLocaleString('es-ES');
