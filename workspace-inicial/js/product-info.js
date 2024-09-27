@@ -96,23 +96,47 @@ function showData(product) {
                 </div>
                 <div class="mb-3">
                     <label for="rating-score" class="form-label">Puntuación</label>
-                    <select id="rating-score" class="form-select">
-                        <option value="1">1 estrella</option>
-                        <option value="2">2 estrellas</option>
-                        <option value="3">3 estrellas</option>
-                        <option value="4">4 estrellas</option>
-                        <option value="5">5 estrellas</option>
-                    </select>
+                    <div id="star-rating" class="star-rating">
+                        <span class="fa fa-star" data-value="1"></span>
+                        <span class="fa fa-star" data-value="2"></span>
+                        <span class="fa fa-star" data-value="3"></span>
+                        <span class="fa fa-star" data-value="4"></span>
+                        <span class="fa fa-star" data-value="5"></span>
+                    </div>
+                    <p id="rating-score"></p>
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar</button>
             </form>
         </div>
         `;
-
+        
         container.innerHTML = productInfoHTML;
+
+        // Ahora que las estrellas del formulario están en el DOM, agrega los eventos de clic
+        const starRatingContainer = document.getElementById('star-rating');
+        const stars = starRatingContainer.querySelectorAll('.fa-star');
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                updateRating(index + 1);
+            });
+        });
     }
 }
 
+function updateRating(rating) {
+    const stars = document.querySelectorAll('#star-rating .fa-star');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.add('checked');
+            star.style.color = '#ffd700';  // Estrella dorada
+        } else {
+            star.classList.remove('checked');
+            star.style.color = '#ccc';  // Estrella gris
+        }
+    });
+    document.getElementById('rating-score').textContent = `Puntuación: ${rating}`;
+}
 function fetchRatings() {
     fetch(`https://japceibal.github.io/emercado-api/products_comments/${productID}.json`)
         .then(response => response.json())
