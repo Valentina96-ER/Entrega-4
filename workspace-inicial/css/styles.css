@@ -395,7 +395,13 @@ h1{
   margin-bottom: 10px;
 }
 
+.fa-star.checked {
+  color: #ffd700; /* Color amarillo */
+}
 
+.fa-star {
+  color: #ccc; /* Color gris claro */
+}
 
 
 
