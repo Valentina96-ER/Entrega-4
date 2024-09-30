@@ -1,17 +1,19 @@
+const productID = localStorage.getItem("productID");
 document.addEventListener("DOMContentLoaded", function () {
-    const productID = localStorage.getItem("productID");
+    
  
     if (productID) {
-      fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
-        .then(response => response.json())
-        .then(data => {
-          const product = data;  // Guardar el producto en una variable
-          console.log(product); // Verificar los productos
-          showData(product);  // Mostrar el producto
-        })
-        .catch(error => console.error('Error al cargar el producto:', error));
+        fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
+            .then(response => response.json())
+            .then(data => {
+                const product = data;  // Guardar el producto en una variable
+                console.log(product); // Verificar los productos
+                showData(product);  // Mostrar el producto
+                fetchRatings();  // Cargar y mostrar las calificaciones
+            })
+            .catch(error => console.error('Error al cargar el producto:', error));
     } else {
-      console.error('No se ha encontrado un productID en el almacenamiento local.');
+        console.error('No se ha encontrado un productID en el almacenamiento local.');
     }
 });
 
@@ -59,10 +61,11 @@ function showData(product) {
                 <div class="row mb-4">
                 <div class="col-12">
                     <h2><strong>${product.name}</strong></h2>
+                    <div id="average-stars-container"></div> <!-- Contenedor para estrellas promedio -->
                     <p>${product.description}</p>
                     <h4>Precio: ${product.currency} ${formattedCost}</h4>
                     <p>Cantidad de vendidos: ${product.soldCount}</p>
-                </div>
+                </div>  
                 </div>
                 
                 <!-- Productos relacionados -->
@@ -78,17 +81,136 @@ function showData(product) {
             </div>
             </div>
         </div>
-      `;     
-        container.innerHTML += productInfoHTML;
+        <!-- Sección de calificaciones -->
+                    <h4>Calificaciones de los usuarios</h4>
+                    <div id="ratings"></div>
+                </div> 
+        <!-- Formulario para realizar una calificación -->
+        <div class="container mt-4">
+            <h4>Deja tu calificación</h4>
+            <form id="rating-form">
+                <div class="mb-3">
+                    <label for="rating-text" class="form-label">Comentario</label>
+                    <textarea id="rating-text" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="rating-score" class="form-label">Puntuación</label>
+
+                    <div id="star-rating" class="star-rating">
+                        <span class="fa fa-star" data-value="1"></span>
+                        <span class="fa fa-star" data-value="2"></span>
+                        <span class="fa fa-star" data-value="3"></span>
+                        <span class="fa fa-star" data-value="4"></span>
+                        <span class="fa fa-star" data-value="5"></span>
+                    </div>
+                    <p id="rating-score"></p>
+
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+        `;
+
+        
+        container.innerHTML = productInfoHTML;
+
+        // Ahora que las estrellas del formulario están en el DOM, agrega los eventos de clic
+        const starRatingContainer = document.getElementById('star-rating');
+        const stars = starRatingContainer.querySelectorAll('.fa-star');
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                updateRating(index + 1);
+            });
+        });
     }
 }
 
-// Función para formatear el número con puntos
-function formatNumber(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+function updateRating(rating) {
+    const stars = document.querySelectorAll('#star-rating .fa-star');
+    stars.forEach((star, index) => {
+        if (index < rating) {
+            star.classList.add('checked');
+            star.style.color = '#ffd700';  // Estrella dorada
+        } else {
+            star.classList.remove('checked');
+            star.style.color = '#ccc';  // Estrella gris
+        }
+    });
+    document.getElementById('rating-score').textContent = `Puntuación: ${rating}`;
 }
 
-function setProductID(id) {
-  localStorage.setItem("productID", id);
-  window.location = "product-info.html"
+function fetchRatings() {
+    fetch(`https://japceibal.github.io/emercado-api/products_comments/${productID}.json`)
+        .then(response => response.json())
+        .then(data => {
+            const ratingsContainer = document.getElementById('ratings');
+
+            let totalScore = 0;  // Variable para almacenar la suma de las calificaciones
+            let numberOfRatings = data.length;  // Número total de calificaciones
+
+            data.forEach(comentario => {
+                const divComentario = document.createElement('div');
+                divComentario.classList.add('ratings-row');
+
+                // Crear el nombre del usuario
+                const userElement = document.createElement('h5');
+                userElement.textContent = comentario.user;
+                divComentario.appendChild(userElement);
+
+                // Crear las estrellas usando Font Awesome
+                const calificacion = Math.round(comentario.score);
+
+                totalScore += calificacion;  // Sumar la calificación al total
+
+                for (let i = 0; i < 5; i++) {
+                    const estrella = document.createElement('span');
+                    estrella.classList.add('fa', 'fa-star');
+                    if (i < calificacion) {
+                        estrella.classList.add('checked');
+                    }
+                    divComentario.appendChild(estrella);
+                }
+
+                // Crear el comentario
+                const comentarioElement = document.createElement('p');
+                comentarioElement.textContent = comentario.description;
+                divComentario.appendChild(comentarioElement);
+
+
+                ratingsContainer.appendChild(divComentario);
+            });
+
+            // Calcular el promedio de las calificaciones
+            const averageScore = totalScore / numberOfRatings;
+            renderAverageStars(averageScore);  // Mostrar las estrellas promedio
+        })
+        .catch(error => console.error('Error al cargar las calificaciones:', error));
+}
+
+// Función para renderizar las estrellas basadas en el promedio
+function renderAverageStars(averageScore) {
+    console.log('Average score:', averageScore);  // Para verificar el promedio de estrellas
+
+    const starsContainer = document.getElementById('average-stars-container');
+    starsContainer.innerHTML = '';  // Limpiar el contenedor antes de añadir nuevas estrellas
+
+    const roundedAverage = Math.round(averageScore);  // Redondear el promedio
+
+    // Crear las estrellas para el promedio
+    for (let i = 0; i < 5; i++) {
+        const estrella = document.createElement('span');
+        estrella.classList.add('fa', 'fa-star');
+        if (i < roundedAverage) {
+            estrella.classList.add('checked');  // Estrella activa
+        }
+        starsContainer.appendChild(estrella);
+    }
+}
+
+
+
+
+function formatNumber(num) {
+    return num.toLocaleString('es-ES');
 }
