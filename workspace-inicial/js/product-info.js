@@ -82,7 +82,6 @@ function showData(product) {
             </div>
         </div>
         <!-- Sección de calificaciones -->
-                    
                     <h4>Calificaciones de los usuarios</h4>
                     <div id="ratings"></div>
                 </div> 
@@ -96,6 +95,7 @@ function showData(product) {
                 </div>
                 <div class="mb-3">
                     <label for="rating-score" class="form-label">Puntuación</label>
+
                     <div id="star-rating" class="star-rating">
                         <span class="fa fa-star" data-value="1"></span>
                         <span class="fa fa-star" data-value="2"></span>
@@ -104,11 +104,13 @@ function showData(product) {
                         <span class="fa fa-star" data-value="5"></span>
                     </div>
                     <p id="rating-score"></p>
+
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar</button>
             </form>
         </div>
         `;
+
         
         container.innerHTML = productInfoHTML;
 
@@ -137,11 +139,13 @@ function updateRating(rating) {
     });
     document.getElementById('rating-score').textContent = `Puntuación: ${rating}`;
 }
+
 function fetchRatings() {
     fetch(`https://japceibal.github.io/emercado-api/products_comments/${productID}.json`)
         .then(response => response.json())
         .then(data => {
             const ratingsContainer = document.getElementById('ratings');
+
             let totalScore = 0;  // Variable para almacenar la suma de las calificaciones
             let numberOfRatings = data.length;  // Número total de calificaciones
 
@@ -156,6 +160,7 @@ function fetchRatings() {
 
                 // Crear las estrellas usando Font Awesome
                 const calificacion = Math.round(comentario.score);
+
                 totalScore += calificacion;  // Sumar la calificación al total
 
                 for (let i = 0; i < 5; i++) {
@@ -171,6 +176,7 @@ function fetchRatings() {
                 const comentarioElement = document.createElement('p');
                 comentarioElement.textContent = comentario.description;
                 divComentario.appendChild(comentarioElement);
+
 
                 ratingsContainer.appendChild(divComentario);
             });
@@ -201,6 +207,7 @@ function renderAverageStars(averageScore) {
         starsContainer.appendChild(estrella);
     }
 }
+
 
 
 
