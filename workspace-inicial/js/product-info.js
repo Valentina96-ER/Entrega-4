@@ -18,13 +18,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     const comment = document.getElementById('rating-text').value;
                     const score = document.getElementById('rating-score').textContent.match(/\d+/)[0]; // Obtiene el valor de la puntuación seleccionada en las estrellas
                     const username = localStorage.getItem('username') || 'Usuario Anónimo';  // Obtener el nombre de usuario desde localStorage, o un valor por defecto
-                    
+                    const currentDate = new Date().toLocaleDateString(); // Obtener la fecha
+
+
                     if (comment && score) {
                         // Crear un nuevo objeto de calificación
                         const newRating = {
                             user: username,  // Usar el nombre de usuario almacenado o un valor por defecto
                             description: comment,
                             score: parseInt(score),
+                            date: currentDate,
                         };
 
                         // Guardar en localStorage
@@ -212,6 +215,11 @@ function fetchRatings() {
                 comentarioElement.textContent = comentario.description;
                 divComentario.appendChild(comentarioElement);
 
+                 // Agregar la fecha si está disponible
+                 const dateElement = document.createElement('p');
+                 dateElement.textContent = comentario.date ? `Fecha: ${comentario.date}` : "Fecha no disponible"; // Usar la fecha de la API o un mensaje por defecto
+                 divComentario.appendChild(dateElement);
+
 
                 ratingsContainer.appendChild(divComentario);
             });
@@ -256,6 +264,11 @@ function addRatingToDOM(rating) {
     userElement.textContent = rating.user;
     divComentario.appendChild(userElement);
 
+    // Mostrar la fecha de la calificación
+    const dateElement = document.createElement('small');
+    dateElement.textContent = `Fecha: ${rating.date}`; // Mostrar la fecha
+    divComentario.appendChild(dateElement);
+
     // Crear las estrellas usando Font Awesome
     const calificacion = Math.round(rating.score);
     for (let i = 0; i < 5; i++) {
@@ -276,15 +289,23 @@ function addRatingToDOM(rating) {
     ratingsContainer.appendChild(divComentario);
 }
 
-// Función para cargar las calificaciones del localStorage
 function loadLocalRatings() {
     const productID = localStorage.getItem("productID");
     const storedRatings = JSON.parse(localStorage.getItem(`ratings-${productID}`)) || [];
     
     storedRatings.forEach(rating => {
+        // Si alguna calificación no tiene una fecha, agregar "Fecha no disponible"
+        if (!rating.date) {
+            rating.date = "Fecha no disponible"
+        }
         addRatingToDOM(rating);  // Agregar cada calificación guardada en localStorage al DOM
     });
 }
+
+function setProductID(id) {
+    localStorage.setItem("productID", id);
+    window.location = "product-info.html"
+  }
 
 function formatNumber(num) {
     return num.toLocaleString('es-ES');
