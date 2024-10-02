@@ -1,7 +1,7 @@
 const productID = localStorage.getItem("productID");
 document.addEventListener("DOMContentLoaded", function () {
-    
- 
+
+
     if (productID) {
         fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
             .then(response => response.json())
@@ -12,14 +12,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Una vez que el producto y el formulario han sido agregados al DOM, se añade el evento de 'submit'
                 const ratingForm = document.getElementById('rating-form');
+
                 ratingForm.addEventListener('submit', function (event) {
                     event.preventDefault(); // Evitar que se recargue la página
 
                     const comment = document.getElementById('rating-text').value;
                     const score = document.getElementById('rating-score').textContent.match(/\d+/)[0]; // Obtiene el valor de la puntuación seleccionada en las estrellas
                     const username = localStorage.getItem('username') || 'Usuario Anónimo';  // Obtener el nombre de usuario desde localStorage, o un valor por defecto
-                    const currentDate = new Date().toLocaleDateString(); // Obtener la fecha
-
+                    
+                    var options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+                    const currentDate = new Date().toLocaleDateString("en-GB",options);
+                   
 
                     if (comment && score) {
                         // Crear un nuevo objeto de calificación
@@ -37,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // Mostrar la calificación inmediatamente
                         addRatingToDOM(newRating);  // Agregar la nueva calificación al DOM sin recargar la página
-                        
+
                         // Limpiar el formulario
                         ratingForm.reset();
                         updateRating(0);  // Restablecer la selección de estrellas
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function showData(product) {
     const container = document.getElementById("container");
     container.innerHTML = ''; // Limpiar el contenedor antes de mostrar los nuevos productos
-   
+
     if (product) {
         const formattedCost = formatNumber(product.cost);  // Formatear el costo
 
@@ -149,7 +152,7 @@ function showData(product) {
         </div>
         `;
 
-        
+
         container.innerHTML = productInfoHTML;
 
         // Ahora que las estrellas del formulario están en el DOM, agrega los eventos de clic
@@ -215,10 +218,11 @@ function fetchRatings() {
                 comentarioElement.textContent = comentario.description;
                 divComentario.appendChild(comentarioElement);
 
-                 // Agregar la fecha si está disponible
-                 const dateElement = document.createElement('p');
-                 dateElement.textContent = comentario.date ? `Fecha: ${comentario.date}` : "Fecha no disponible"; // Usar la fecha de la API o un mensaje por defecto
-                 divComentario.appendChild(dateElement);
+                // Agregar la fecha si está disponible
+                const dateElement = document.createElement('p');
+                var options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+                dateElement.textContent = comentario.dateTime ? `Fecha: ${new Date(comentario.dateTime).toLocaleDateString("en-GB",options)}` : ""; // Usar la fecha de la API o un mensaje por defecto
+                divComentario.appendChild(dateElement);
 
 
                 ratingsContainer.appendChild(divComentario);
@@ -264,11 +268,7 @@ function addRatingToDOM(rating) {
     userElement.textContent = rating.user;
     divComentario.appendChild(userElement);
 
-    // Mostrar la fecha de la calificación
-    const dateElement = document.createElement('small');
-    dateElement.textContent = `Fecha: ${rating.date}`; // Mostrar la fecha
-    divComentario.appendChild(dateElement);
-
+    
     // Crear las estrellas usando Font Awesome
     const calificacion = Math.round(rating.score);
     for (let i = 0; i < 5; i++) {
@@ -280,10 +280,16 @@ function addRatingToDOM(rating) {
         divComentario.appendChild(estrella);
     }
 
-    // Crear el comentario
+       // Crear el comentario
     const comentarioElement = document.createElement('p');
     comentarioElement.textContent = rating.description;
     divComentario.appendChild(comentarioElement);
+
+    // Mostrar la fecha de la calificación
+    const dateElement = document.createElement('p');
+    console.log(rating);
+    dateElement.textContent = `Fecha: ${rating.date}`; // Mostrar la fecha
+    divComentario.appendChild(dateElement);
 
     // Insertar el comentario al contenedor de calificaciones
     ratingsContainer.appendChild(divComentario);
@@ -292,11 +298,11 @@ function addRatingToDOM(rating) {
 function loadLocalRatings() {
     const productID = localStorage.getItem("productID");
     const storedRatings = JSON.parse(localStorage.getItem(`ratings-${productID}`)) || [];
-    
+
     storedRatings.forEach(rating => {
         // Si alguna calificación no tiene una fecha, agregar "Fecha no disponible"
-        if (!rating.date) {
-            rating.date = "Fecha no disponible"
+        if (!rating.dateTime) {
+            rating.dateTime = "Fecha no disponible"
         }
         addRatingToDOM(rating);  // Agregar cada calificación guardada en localStorage al DOM
     });
@@ -305,7 +311,7 @@ function loadLocalRatings() {
 function setProductID(id) {
     localStorage.setItem("productID", id);
     window.location = "product-info.html"
-  }
+}
 
 function formatNumber(num) {
     return num.toLocaleString('es-ES');
