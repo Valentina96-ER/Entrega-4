@@ -19,10 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     const comment = document.getElementById('rating-text').value;
                     const score = document.getElementById('rating-score').textContent.match(/\d+/)[0]; // Obtiene el valor de la puntuación seleccionada en las estrellas
                     const username = localStorage.getItem('username') || 'Usuario Anónimo';  // Obtener el nombre de usuario desde localStorage, o un valor por defecto
-                    
+
                     var options = { year: '2-digit', month: '2-digit', day: '2-digit' };
-                    const currentDate = new Date().toLocaleDateString("en-GB",options);
-                   
+                    const currentDate = new Date().toLocaleDateString("en-GB", options);
+
 
                     if (comment && score) {
                         // Crear un nuevo objeto de calificación
@@ -123,9 +123,9 @@ function showData(product) {
             </div>
         </div>
         <!-- Sección de calificaciones -->
-                    <h4>Calificaciones de los usuarios</h4>
-                    <div id="ratings"></div>
-                </div> 
+          <h4 class="mt-4">Calificaciones de los usuarios</h4>
+            <div id="ratings"></div>
+             </div> 
         <!-- Formulario para realizar una calificación -->
         <div class="container mt-4">
             <h4>Deja tu calificación</h4>
@@ -194,6 +194,13 @@ function fetchRatings() {
                 const divComentario = document.createElement('div');
                 divComentario.classList.add('ratings-row');
 
+                // Agregar la fecha si está disponible
+                const dateElement = document.createElement('p');
+                var options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+                dateElement.textContent = comentario.dateTime ? `Fecha: ${new Date(comentario.dateTime).toLocaleDateString("en-GB", options)}` : ""; // Usar la fecha de la API o un mensaje por defecto
+                divComentario.appendChild(dateElement);
+
+
                 // Crear el nombre del usuario
                 const userElement = document.createElement('h5');
                 userElement.textContent = comentario.user;
@@ -218,18 +225,14 @@ function fetchRatings() {
                 comentarioElement.textContent = comentario.description;
                 divComentario.appendChild(comentarioElement);
 
-                // Agregar la fecha si está disponible
-                const dateElement = document.createElement('p');
-                var options = { year: '2-digit', month: '2-digit', day: '2-digit' };
-                dateElement.textContent = comentario.dateTime ? `Fecha: ${new Date(comentario.dateTime).toLocaleDateString("en-GB",options)}` : ""; // Usar la fecha de la API o un mensaje por defecto
-                divComentario.appendChild(dateElement);
+        
 
 
                 ratingsContainer.appendChild(divComentario);
             });
 
             // Calcular el promedio de las calificaciones
-            const averageScore = totalScore / numberOfRatings;
+            let averageScore = totalScore / numberOfRatings;
             renderAverageStars(averageScore);  // Mostrar las estrellas promedio
         })
         .catch(error => console.error('Error al cargar las calificaciones:', error));
@@ -256,19 +259,24 @@ function renderAverageStars(averageScore) {
 }
 
 
-
 // Función para agregar una calificación al DOM
 function addRatingToDOM(rating) {
     const ratingsContainer = document.getElementById('ratings');
     const divComentario = document.createElement('div');
     divComentario.classList.add('ratings-row');
 
+     // Mostrar la fecha de la calificación
+     const dateElement = document.createElement('p');
+     console.log(rating);
+     dateElement.textContent = `Fecha: ${rating.date}`; // Mostrar la fecha
+     divComentario.appendChild(dateElement);
+
     // Crear el nombre del usuario
     const userElement = document.createElement('h5');
     userElement.textContent = rating.user;
     divComentario.appendChild(userElement);
 
-    
+
     // Crear las estrellas usando Font Awesome
     const calificacion = Math.round(rating.score);
     for (let i = 0; i < 5; i++) {
@@ -280,18 +288,12 @@ function addRatingToDOM(rating) {
         divComentario.appendChild(estrella);
     }
 
-       // Crear el comentario
+    // Crear el comentario
     const comentarioElement = document.createElement('p');
     comentarioElement.textContent = rating.description;
     divComentario.appendChild(comentarioElement);
 
-    // Mostrar la fecha de la calificación
-    const dateElement = document.createElement('p');
-    console.log(rating);
-    dateElement.textContent = `Fecha: ${rating.date}`; // Mostrar la fecha
-    divComentario.appendChild(dateElement);
-
-    // Insertar el comentario al contenedor de calificaciones
+       // Insertar el comentario al contenedor de calificaciones
     ratingsContainer.appendChild(divComentario);
 }
 
