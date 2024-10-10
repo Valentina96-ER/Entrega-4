@@ -73,8 +73,8 @@
           <div class="row mb-2">
             <div class="col-md-6">
               <label for="email" class="form-label">E-mail*</label>
-              <input type="email" class="form-control" id="email" required>
-            </div>
+              <input type="email" class="form-control" id="email" required readonly> <!-- Email no editable -->
+            </div>                       
             <div class="col-md-6">
               <label for="phone" class="form-label">Teléfono de contacto</label>
               <input type="text" class="form-control" id="phone">
@@ -85,9 +85,9 @@
             <input type="file" class="form-control" id="profilePhoto" accept="image/*">
           </div>
           <div class="form-check form-switch mb-3">
-            <input class="form-check-input" type="checkbox" id="darkModeSwitch" onchange="toggleDarkMode()">
+            <input class="form-check-input" type="checkbox" id="darkModeSwitch">
             <label class="form-check-label" for="darkModeSwitch">Modo noche</label>
-          </div>
+          </div>          
           <button type="submit" class="btn btn-primary">Guardar cambios</button>
         </form>
       </div>
