@@ -18,7 +18,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const comment = document.getElementById('rating-text').value;
                     const score = document.getElementById('rating-score').textContent.match(/\d+/)[0]; // Obtiene el valor de la puntuación seleccionada en las estrellas
-                    const username = localStorage.getItem('username') || 'Usuario Anónimo';  // Obtener el nombre de usuario desde localStorage, o un valor por defecto
+                    
+                    // Obtener los datos del perfil del usuario desde localStorage
+                    const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+                    const users = JSON.parse(localStorage.getItem('users'));
+
+                    // Inicializar la variable username
+                    let username = 'Usuario Anónimo';
+
+                    // Verificar si el perfil de usuario tiene firstName y lastName
+                    if (userProfile && userProfile.firstName && userProfile.lastName && userProfile.firstName !== '' && userProfile.lastName !== '') {
+                    username = `${userProfile.firstName}_${userProfile.lastName}`; // Combinar el nombre y apellido
+                    } else if (users && users.length > 0 && users[0].email) {
+                    username = users[0].email; // Si no hay nombre, usar el email del primer usuario
+                    }
+                    //const username = localStorage.getItem('username') || 'Usuario Anónimo' 
 
                     var options = { year: '2-digit', month: '2-digit', day: '2-digit' };
                     const currentDate = new Date().toLocaleDateString("en-GB", options);
@@ -225,9 +239,6 @@ function fetchRatings() {
                 comentarioElement.textContent = comentario.description;
                 divComentario.appendChild(comentarioElement);
 
-        
-
-
                 ratingsContainer.appendChild(divComentario);
             });
 
@@ -318,41 +329,5 @@ function setProductID(id) {
 function formatNumber(num) {
     return num.toLocaleString('es-ES');
 }
-
-// Cargar preferencia de Modo Noche
-function loadDarkModePreference() {
-    const darkMode = localStorage.getItem('darkMode') === 'true';
-    if (darkMode) {
-      document.body.classList.add('bg-dark');
-      document.body.classList.add('text-white');
-    } else {
-      document.body.classList.remove('bg-dark');
-      document.body.classList.remove('text-white');
-    }
-  }
-
-   // Cargar nombre del usuario desde localStorage en el menú
-  function loadUserNameMenu() {
-    const userProfile = JSON.parse(localStorage.getItem('userProfile')); // Obtiene el objeto guardado en localStorage
-    if (userProfile && userProfile.firstName) { 
-      document.getElementById('userNameMenu').textContent = userProfile.firstName; // Si existe el firstName, lo muestra en el menú
-    } else {
-      document.getElementById('userNameMenu').textContent = 'Usuario'; // Si no hay firstName, muestra 'Usuario'
-    }
-  }
-
-  function logout() {
-    // Limpiar todo el localStorage
-    localStorage.clear();
-    
-    // Redirigir al usuario a la página de inicio de sesión
-    window.location.href = 'login.html';
-  } 
-  
-  // Cargar configuraciones iniciales al cargar la página
-  document.addEventListener('DOMContentLoaded', () => {
-    loadDarkModePreference();
-    loadUserNameMenu();
-  });
   
   

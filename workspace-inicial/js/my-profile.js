@@ -56,7 +56,7 @@ function loadUserProfile() {
     document.getElementById('secondName').value = userProfile.secondName || '';
     document.getElementById('secondLastName').value = userProfile.secondLastName || '';
     document.getElementById('phone').value = userProfile.phone || '';
-
+    localStorage.setItem('firstName', userProfile.firstName);
     updateUserNameMenu(userProfile.firstName);
   }
 }
@@ -78,7 +78,7 @@ function handleFormSubmit(event) {
   const secondLastName = document.getElementById('secondLastName').value;
   const phone = document.getElementById('phone').value;
   const email = localStorage.getItem('email'); // El email ya está guardado y es readonly
-
+ 
   // Verificar que los campos obligatorios (nombre y apellido) estén completos
   if (!firstName || !lastName) {
     alert('Por favor, complete los campos obligatorios (Nombre y Apellido).');

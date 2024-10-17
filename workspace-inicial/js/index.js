@@ -37,23 +37,3 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 
-function loadDarkModePreference() {
-  const darkMode = localStorage.getItem('darkMode') === 'true';
-  if (darkMode) {
-      document.body.classList.add('bg-dark');
-      document.body.classList.add('text-white');
-  } else {
-      document.body.classList.remove('bg-dark');
-      document.body.classList.remove('text-white');
-  }
-}
-
-function logout() {
-  // Limpiar todo el localStorage
-  localStorage.clear();
-  
-  // Redirigir al usuario a la página de inicio de sesión
-  window.location.href = 'login.html';
-}
-
-  
