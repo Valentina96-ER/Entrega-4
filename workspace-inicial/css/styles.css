@@ -47,9 +47,9 @@ nav a {
   width: 80%;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5); 
   border-radius: 10px;
-  text-shadow: 1px 1px 2px grey;
+  text-shadow: 1px 1px 2px grey; 
 }
 
 .jumbotron .lead {
@@ -180,14 +180,12 @@ a.custom-card:hover {
 }
 
 /*producto*/
-#container {
+#containerProd {
   flex-direction: column;
-  gap: 20px;
 }
+
 .product {
-  
     display: flex;
-   
     padding: 20px;
     border: 1px solid #ccc;
     background-color: #f9f9f9;
@@ -383,10 +381,11 @@ h1{
 }
 
 #searchInput {
-  width: 100%;
+  width: 90%; /* Ajusta el ancho al 80% */
   padding: 10px;
-  margin-bottom: 20px;
+  margin: 0 auto 20px auto; /* Centra horizontalmente con 'margin: 0 auto' */
   font-size: 16px;
+  display: block; 
 }
 
 .product-item {
@@ -403,6 +402,41 @@ h1{
   color: #ccc; /* Color gris claro */
 }
 
+/* Dark mode */
+
+/* Estilo para las tarjetas en modo noche */ 
+.bg-dark .card.mb-4.shadow-sm.custom-card.cursor-active { background-color: #343a40; } 
+/*.bg-dark .card-text { color: #ffffff;} /* Color de texto blanco */  
+
+body.bg-dark .card { background-color: #343a40; 
+  color: white; 
+  border: 1px solid #444; }
+
+.bg-dark .btn.btn-light.btn-lg.btn-block {  background-color: #212529;
+  border: none;
+ color: white;}
+
+ .bg-dark .album.py-5.bg-light {
+  background-color: #212529 !important; /* Usar !important para forzar el fondo oscuro */
+}
+
+.bg-dark .list-group-item.list-group-item-action { background-color: #343a40; 
+  color: white; 
+  border: 1px solid #444; }
+
+.bg-dark .img-thumbnail {
+  background-color: transparent; /* Elimina el fondo de la imagen */
+  border-color: #444; /* Opcional: Cambia el color del borde en modo oscuro si lo deseas */
+  }
+
+.bg-dark .row.mb-4.product { background-color: #343a40; 
+  color: white; 
+  border: none;
+}
+
+.bg-dark #containerProd h4, .bg-dark #containerProd p {
+  color: white; 
+}
 
 
 

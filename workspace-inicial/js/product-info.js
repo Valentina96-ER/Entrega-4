@@ -18,7 +18,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const comment = document.getElementById('rating-text').value;
                     const score = document.getElementById('rating-score').textContent.match(/\d+/)[0]; // Obtiene el valor de la puntuación seleccionada en las estrellas
-                    const username = localStorage.getItem('username') || 'Usuario Anónimo';  // Obtener el nombre de usuario desde localStorage, o un valor por defecto
+                    
+                    // Obtener los datos del perfil del usuario desde localStorage
+                    const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+                    const users = JSON.parse(localStorage.getItem('users'));
+
+                    // Inicializar la variable username
+                    let username = 'Usuario Anónimo';
+
+                    // Verificar si el perfil de usuario tiene firstName y lastName
+                    if (userProfile && userProfile.firstName && userProfile.lastName && userProfile.firstName !== '' && userProfile.lastName !== '') {
+                    username = `${userProfile.firstName}_${userProfile.lastName}`; // Combinar el nombre y apellido
+                    } else if (users && users.length > 0 && users[0].email) {
+                    username = users[0].email; // Si no hay nombre, usar el email del primer usuario
+                    }
+                    //const username = localStorage.getItem('username') || 'Usuario Anónimo' 
 
                     var options = { year: '2-digit', month: '2-digit', day: '2-digit' };
                     const currentDate = new Date().toLocaleDateString("en-GB", options);
@@ -225,9 +239,6 @@ function fetchRatings() {
                 comentarioElement.textContent = comentario.description;
                 divComentario.appendChild(comentarioElement);
 
-        
-
-
                 ratingsContainer.appendChild(divComentario);
             });
 
@@ -318,3 +329,5 @@ function setProductID(id) {
 function formatNumber(num) {
     return num.toLocaleString('es-ES');
 }
+  
+  

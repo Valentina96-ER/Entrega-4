@@ -85,7 +85,7 @@ const filteredProducts = [...filteredProductsByName, ...filteredProductsByDescri
 
 // Función para mostrar datos de los productos
 function showData(products) {
-  const container = document.getElementById("container");
+  const container = document.getElementById("containerProd");
   container.innerHTML = ''; // Limpiar el contenedor antes de mostrar los nuevos productos
  
   if (products.length === 0) {
@@ -123,5 +123,4 @@ function setProductID(id) {
   localStorage.setItem("productID", id);
   window.location = "product-info.html";
 }
-
 
