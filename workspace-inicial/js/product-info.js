@@ -120,6 +120,7 @@ function showData(product) {
                     <p>${product.description}</p>
                     <h4>Precio: ${product.currency} ${formattedCost}</h4>
                     <p>Cantidad de vendidos: ${product.soldCount}</p>
+                    <button id="buy-button" class="btn btn-primary">Comprar</button>
                 </div>  
                 </div>
                 
@@ -168,6 +169,23 @@ function showData(product) {
 
 
         container.innerHTML = productInfoHTML;
+ // Asignar evento al botón de compra
+document.getElementById("buy-button").addEventListener("click", function () {
+    const productToCart = {
+        name: product.name,
+        cost: product.cost,
+        currency: product.currency,
+        image: product.images[0], // Usa la primera imagen del array
+        quantity: 1 // La cantidad inicial es 1 cuando el usuario compra
+    };
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(productToCart);
+    localStorage.setItem("cart", JSON.stringify(cart)); // Guarda el carrito en el localStorage
+    window.location.href = "cart.html"; // Redirige al carrito
+});
+
+
 
         // Ahora que las estrellas del formulario están en el DOM, agrega los eventos de clic
         const starRatingContainer = document.getElementById('star-rating');
@@ -330,4 +348,4 @@ function formatNumber(num) {
     return num.toLocaleString('es-ES');
 }
   
-  
+
