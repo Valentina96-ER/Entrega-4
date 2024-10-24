@@ -344,8 +344,9 @@ function setProductID(id) {
     window.location = "product-info.html"
 }
 
+// Función para formatear números con separación de miles
 function formatNumber(num) {
-    return num.toLocaleString('es-ES');
+    return num.toLocaleString('es-ES', { minimumFractionDigits: 0, useGrouping: true});
 }
   
 
