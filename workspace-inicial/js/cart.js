@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cart.forEach((product, index) => {
         document.getElementById(`remove${index}`).addEventListener("click", function () {
             cart.splice(index, 1);
-            localStorage.setItem("cart", JSON.stringify(cart));
+            saveCartToLocalStorage(cart);
             location.reload();
         });
 
@@ -92,13 +92,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Actualizar la cantidad en el producto y guardar en localStorage
             product.quantity = newQuantity;
-            localStorage.setItem("cart", JSON.stringify(cart));
+            saveCartToLocalStorage(cart);
 
-            // Actualizar los totales
+            // Actualizar los totales y el número de productos en el carrito
             updateTotals(cart);
-
-            // Actualizar el número de productos en el carrito
-            updateCartCount(cart); // <-- Llamada para actualizar el número en el ícono
+            updateCartCount(cart);
         });
     });
 
@@ -128,7 +126,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para actualizar el número de productos en el carrito
     function updateCartCount(cart) {
         let totalItems = cart.reduce((sum, product) => sum + product.quantity, 0); // Sumar todas las cantidades
-        document.getElementById("cartCount").innerText = totalItems;
+        document.getElementById("cartCount").innerText = totalItems > 0 ? totalItems : 0; // Mostrar 0 si no hay productos
+        localStorage.setItem("cartCount", totalItems); // Guardar el total en localStorage
+    }
+
+    // Función para guardar el carrito en localStorage
+    function saveCartToLocalStorage(cart) {
+        localStorage.setItem("cart", JSON.stringify(cart));
     }
 
     document.getElementById("checkoutButton").addEventListener("click", function () {

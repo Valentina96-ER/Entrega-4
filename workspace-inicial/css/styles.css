@@ -165,9 +165,9 @@ footer p {
   display: none;
 }
 
-main {
+/*main {
   min-height: calc(100vh - 210px);
-}
+}*/
 
 a.custom-card,
 a.custom-card:hover {
@@ -457,12 +457,23 @@ body.bg-dark .card { background-color: #343a40;
   color: white; /* Color del número en negro */
 }
 
-
-
-
-
-
-
+#cartCount {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco ligeramente transparente */
+  color:  #343a40; /* Texto gris oscuro para menos contraste */
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* Círculo perfecto */
+  top: -2px;
+  right: -2px;
+  font-size: 0.6rem; /* Tamaño de fuente más pequeño */
+  font-weight: 600; /* Un poco más de peso sin ser muy grueso */
+  box-shadow: none; /* Sin sombra para un look más limpio */
+  border: none; /* Sin borde para mantener la simplicidad */
+}
 
 
 
