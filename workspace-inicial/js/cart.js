@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Si el carrito está vacío, muestra un mensaje de alerta
     if (cart.length === 0) {
         document.querySelector("main").innerHTML = `
-            <div class="alert alert-danger text-center" role="alert">
+            <div class="text-center p-4">
                 <h4 class="alert-heading">Tu carrito está vacío</h4>
-                <a href="categories.html" class="btn btn-primary">Seguir comprando</a>
+                <a href="categories.html" class="btn btn-primary">Comienza tu compra</a>
             </div>`;
         updateCartCount(cart); // Actualizar el número de productos en el carrito
         return;
