@@ -442,5 +442,317 @@ body.bg-dark .card { background-color: #343a40;
 
 
 
+/* Cart Sidebar Styles */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px; /* Start hidden */
+  width: 300px;
+  height: 100%;
+  background: #f7f7f7;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.cart-sidebar.show {
+  right: 0; /* Slide-in effect */
+}
+
+.cart-sidebar h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Cart Sidebar Styles */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #f7f7f7;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s;
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart-sidebar.show {
+  right: 0;
+}
+
+.cart-sidebar h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Cart Sidebar Styles */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #f7f7f7;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s;
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart-sidebar.show {
+  right: 0;
+}
+
+.cart-sidebar h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Cart Sidebar Styles */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #f7f7f7;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s;
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart-sidebar.show {
+  right: 0;
+}
+
+.cart-sidebar h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Cart Sidebar Styles */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #f7f7f7;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s;
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart-sidebar.show {
+  right: 0;
+}
+
+.cart-sidebar h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Cart Item Styles */
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 12px;
+}
+
+.cart-item .image {
+  flex: 0 0 40px;
+  padding-right: 10px;
+}
+
+.cart-item .image img {
+  width: 100%;
+  height: auto;
+}
+
+.cart-item .name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  white-space: normal;
+}
+
+.cart-item .price {
+  flex: 0 0 60px;
+  text-align: right;
+}
+
+.cart-item .currency {
+  flex: 0 0 40px;
+  text-align: center;
+}
+
+.cart-item .quantity {
+  flex: 0 0 70px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.cart-item .quantity span {
+  display: inline-block;
+  width: 20px; /* Fixed width for consistent alignment */
+  text-align: center;
+}
+
+.cart-item .quantity .btn {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bottom Buttons */
+.cart-sidebar .btn-group {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  margin-top: auto; /* Push buttons to the bottom */
+  gap: 10px; /* Add space between buttons */
+}
+
+.cart-sidebar .btn-group button {
+  width: 100%; /* Full width with gap between buttons */
+  font-size: 12px;
+  padding: 8px;
+}
+
+.cart-sidebar .btn-group .close {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cart-sidebar .btn-group .checkOut {
+  background-color: #ffc107;
+  color: #333;
+}
+
+/* Dark Mode for Cart Sidebar */
+body.bg-dark .cart-sidebar {
+  background: #343a40; /* Dark background for sidebar */
+  color: #ffffff; /* Text color */
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.8);
+}
+
+body.bg-dark .cart-sidebar h2 {
+  color: #ffffff; /* White text for heading */
+}
+
+/* Dark Mode for Cart Items */
+body.bg-dark .cart-item {
+  border-bottom: 1px solid #444; /* Darker border for items */
+  color: #ffffff; /* White text color */
+}
+
+body.bg-dark .cart-item .price,
+body.bg-dark .cart-item .currency,
+body.bg-dark .cart-item .name {
+  color: #ffffff; /* White text for price, currency, and name */
+}
+
+body.bg-dark .cart-item .quantity .btn {
+  background-color: #444; /* Darker background for quantity buttons */
+  color: #ffffff; /* White text for quantity buttons */
+  border: none;
+}
+
+body.bg-dark .cart-item .quantity span {
+  color: #ffffff; /* White text for quantity span */
+}
+
+/* Dark Mode for Bottom Buttons */
+body.bg-dark .cart-sidebar .btn-group .close {
+  background-color: #444; /* Dark button background for close */
+  color: #ffffff; /* White text */
+}
+
+body.bg-dark .cart-sidebar .btn-group .goToCart {
+  background-color: #ffc107; /* Highlighted background for 'Ir al carrito' button */
+  color: #333; /* Darker text color */
+}
+
+/* Adjusted widths for cart item sections with added space */
+.cart-item .name {
+  flex: 2;
+  font-size: 1em;
+  white-space: normal;
+}
+
+.cart-item .price {
+  flex: 1;
+  font-size: 1em;
+  text-align: right;
+}
+
+.cart-item .currency {
+  flex: 0.5;
+  font-size: 1em;
+  text-align: center;
+  margin-left: 8px; /* Space between price and currency */
+  margin-right: 10px; /* Space between currency and quantity */
+}
+
+.cart-item .quantity {
+  flex: 1;
+  font-size: 1em;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.cart-item .quantity .btn {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1em;
+}
+
+
+
 
 
