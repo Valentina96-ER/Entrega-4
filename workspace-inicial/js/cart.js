@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <h4 class="alert-heading">Tu carrito está vacío</h4>
                 <a href="categories.html" class="btn btn-primary">Comienza tu compra</a>
             </div>`;
-        updateCartCount(cart); // Actualizar el número de productos en el carrito
+        updateCartCount(cart);
         return;
     }
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(`remove${index}`).addEventListener("click", function () {
             cart.splice(index, 1);
             saveCartToLocalStorage(cart);
-            location.reload();
+            renderCart();
         });
 
         // Evento para actualizar el subtotal y los totales cuando se cambia la cantidad
@@ -99,9 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
             updateCartCount(cart);
         });
     });
-
-    // Actualizar el número de productos en el carrito
-    updateCartCount(cart);
 
     // Función para actualizar los totales
     function updateTotals(cart) {
@@ -125,14 +122,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para actualizar el número de productos en el carrito
     function updateCartCount(cart) {
-        let totalItems = cart.reduce((sum, product) => sum + product.quantity, 0); // Sumar todas las cantidades
-        document.getElementById("cartCount").innerText = totalItems > 0 ? totalItems : 0; // Mostrar 0 si no hay productos
-        localStorage.setItem("cartCount", totalItems); // Guardar el total en localStorage
+        let totalItems = cart.reduce((sum, product) => sum + product.quantity, 0);
+        document.getElementById("cartCount").innerText = totalItems > 0 ? totalItems : 0;
+        localStorage.setItem("cartCount", totalItems);
     }
 
     // Función para guardar el carrito en localStorage
     function saveCartToLocalStorage(cart) {
         localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    // Función para renderizar el carrito
+    function renderCart() {
+        location.reload();
     }
 
     document.getElementById("checkoutButton").addEventListener("click", function () {
