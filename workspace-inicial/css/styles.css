@@ -165,9 +165,9 @@ footer p {
   display: none;
 }
 
-main {
+/*main {
   min-height: calc(100vh - 210px);
-}
+}*/
 
 a.custom-card,
 a.custom-card:hover {
@@ -420,6 +420,11 @@ body.bg-dark .card { background-color: #343a40;
   background-color: #212529 !important; /* Usar !important para forzar el fondo oscuro */
 }
 
+.bg-dark .table {
+  background-color: #343a40; 
+  color: white; 
+}
+
 .bg-dark .list-group-item.list-group-item-action { background-color: #343a40; 
   color: white; 
   border: 1px solid #444; }
@@ -438,9 +443,37 @@ body.bg-dark .card { background-color: #343a40;
   color: white; 
 }
 
+/* Estilos para el contenedor del carrito */
+.cart-container {
+  position: relative; /* Hace que los elementos dentro se posicionen relativos a él */
+}
 
+/* Estilos para el número (superíndice) */
+#cartCount {
+  position: absolute;
+  top: 0px; /* Ajusta la posición vertical más cerca del ícono */
+  right: -5px; /* Ajusta la posición horizontal más cerca del ícono */
+  font-size: 0.75rem; /* Tamaño de fuente más pequeño para que parezca un superíndice */
+  color: white; /* Color del número en negro */
+}
 
-
+#cartCount {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco ligeramente transparente */
+  color:  #343a40; /* Texto gris oscuro para menos contraste */
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* Círculo perfecto */
+  top: -2px;
+  right: -2px;
+  font-size: 0.6rem; /* Tamaño de fuente más pequeño */
+  font-weight: 600; /* Un poco más de peso sin ser muy grueso */
+  box-shadow: none; /* Sin sombra para un look más limpio */
+  border: none; /* Sin borde para mantener la simplicidad */
+}
 
 
 
