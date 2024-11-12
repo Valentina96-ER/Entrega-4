@@ -598,3 +598,19 @@ body.bg-dark .btn-group .goToCart {
   background-color: #ffc107;
   color: #333;
 }
+
+/* Contenedor para el campo de entrada y el logo */
+.mb-3 {
+  position: relative;
+}
+
+#numeroTarjeta {
+  --logo-url: none;
+  --logo-display: none;
+  background-image: var(--logo-url);
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px) center;
+}
+
+

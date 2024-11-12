@@ -214,9 +214,32 @@ function showCheckoutModal() {
                                     <label for="formaPago" class="form-label">Forma de Pago</label>
                                     <select class="form-select" id="formaPago" required>
                                         <option value="">Seleccione una opción</option>
-                                        <option value="tarjeta">Tarjeta de Crédito</option>
+                                        <option value="tarjeta">Tarjeta de Débito/Crédito</option>
                                         <option value="transferencia">Transferencia Bancaria</option>
                                     </select>
+                                </div>
+                                <div id="tarjetaCampos" style="display: none;">
+                                    <div class="mb-3" style="position: relative;">
+                                        <label for="numeroTarjeta" class="form-label">Número de Tarjeta</label>
+                                        <input type="text" class="form-control" id="numeroTarjeta" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                                        <small id="numeroTarjetaWarning" class="text-danger" style="display:none;">Solo se permiten números</small>
+                                        <!-- Logo de la tarjeta -->
+                                        <img id="logoTarjeta" src="" alt="" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 30px; height: auto;">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nombreTitular" class="form-label">Nombre del Titular</label>
+                                        <input type="text" class="form-control" id="nombreTitular" placeholder="Nombre como aparece en la tarjeta" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fechaExpiracion" class="form-label">Fecha de Expiración</label>
+                                        <input type="text" class="form-control" id="fechaExpiracion" placeholder="MM/AA" maxlength="5" required>
+                                        <small id="fechaExpiracionWarning" class="text-danger" style="display:none;">Fecha inválida o ya expirada</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="codigoCVV" class="form-label">CVV</label>
+                                        <input type="password" class="form-control" id="codigoCVV" placeholder="123" maxlength="3" required>
+                                        <small id="codigoCVVWarning" class="text-danger" style="display:none;">Solo se permiten números</small>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -247,6 +270,69 @@ function showCheckoutModal() {
     const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
     checkoutModal.show();
 
+    // Mostrar campos de tarjeta de crédito/débito según la forma de pago seleccionada
+    document.getElementById("formaPago").addEventListener("change", function() {
+        const tarjetaCampos = document.getElementById("tarjetaCampos");
+        tarjetaCampos.style.display = this.value === "tarjeta" ? "block" : "none";
+    });
+
+    // Formateo del número de tarjeta y validación de entrada
+    document.getElementById('numeroTarjeta').addEventListener('input', function() {
+        let numero = this.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+        numero = numero.substring(0, 16); // Limitar a 16 dígitos
+        this.value = numero.replace(/(\d{4})(?=\d)/g, '$1 '); // Formatear en grupos de 4
+
+        // Detectar el tipo de tarjeta
+        const tipo = detectarTipoTarjeta(numero);
+        if (tipo !== 'desconocida') {
+            this.style.backgroundImage = `url('img/${tipo}.png')`; // Muestra el logo en el fondo del input
+        } else {
+            this.style.backgroundImage = 'none'; // Remueve el logo si el tipo no es reconocido
+        }
+
+        // Mostrar advertencia si se ingresan caracteres no numéricos (sin contar espacios)
+        document.getElementById("numeroTarjetaWarning").style.display = /\D/.test(numero) ? "block" : "none";
+    });
+    
+    // Función para detectar el tipo de tarjeta basado en los primeros dígitos
+    function detectarTipoTarjeta(numero) {
+        const patrones = {
+            visa: /^4/,
+            mastercard: /^5[1-5]/,
+            amex: /^3[47]/,
+            diners: /^36/,
+            discover: /^(6011|622(?:1[2-9]|[2-8]\d|9[01])|64[4-9]|65)/,
+            jcb: /^(352[8-9]|35[3-8][0-9])/
+        };
+        for (const [marca, patron] of Object.entries(patrones)) {
+            if (patron.test(numero)) {
+                return marca;
+            }
+        }
+        return 'desconocida';
+    }
+    
+    // Validación de entrada de fecha de expiración
+    document.getElementById('fechaExpiracion').addEventListener('input', function() {
+        const soloNumeros = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d{0,2})$/, '$1/$2');
+        this.value = soloNumeros;
+    
+        const [mes, anio] = this.value.split('/').map(num => parseInt(num, 10));
+        const fechaActual = new Date();
+        const mesActual = fechaActual.getMonth() + 1;
+        const anioActual = parseInt(fechaActual.getFullYear().toString().slice(-2), 10);
+    
+        document.getElementById("fechaExpiracionWarning").style.display =
+            (mes < 1 || mes > 12 || anio < anioActual || (anio === anioActual && mes < mesActual))
+                ? "block" : "none";
+    });
+    
+    // Validación para el campo CVV, limitando a solo números y longitud de 3
+    document.getElementById('codigoCVV').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').substring(0, 3); // Limitar a 3 dígitos numéricos
+        document.getElementById("codigoCVVWarning").style.display = this.value.length < 3 ? "block" : "none";
+    });
+  
     // Evento para actualizar localidades al seleccionar un departamento
     document.getElementById("departamento").addEventListener("change", function() {
         const deptoSeleccionado = this.value;
