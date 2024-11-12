@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="d-flex justify-content-between">
             <div>
               <a href="categories.html" class="btn btn-secondary">Seguir comprando</a>
-              <button class="btn btn-primary" id="checkoutButton">Pagar</button>  
+              <button class="btn btn-primary" id="checkoutButton">Finalizar compra</button>  
             </div>
             <div>
                 <p id="totalUSD" class="fw-light text-muted fs-5">Total en USD: $${formatNumber(totalUSD)}</p>
@@ -174,31 +174,46 @@ function showCheckoutModal() {
                     <div class="tab-content mt-3" id="checkoutTabsContent">
                         <div class="tab-pane fade show active" id="envio" role="tabpanel">
                             <p>Seleccione el tipo de envío y dirección de envío.</p>
-                            <form>
+                            <form id="envioForm">
                                 <div class="mb-3">
                                     <label for="tipoEnvio" class="form-label">Tipo de Envío</label>
-                                    <select class="form-select" id="tipoEnvio">
+                                    <select class="form-select" id="tipoEnvio" required>
+                                        <option value="">Seleccione una opción</option>
                                         <option value="premium">Premium 2 a 5 días (15%)</option>
                                         <option value="express">Express 5 a 8 días (7%)</option>
                                         <option value="standard">Standard 12 a 15 días (5%)</option>
                                     </select>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="direccionEnvio" class="form-label">Dirección de Envío</label>
-                                    <input type="text" class="form-control mb-2" id="departamento" placeholder="Departamento">
-                                    <input type="text" class="form-control mb-2" id="localidad" placeholder="Localidad">
-                                    <input type="text" class="form-control mb-2" id="calle" placeholder="Calle">
-                                    <input type="text" class="form-control mb-2" id="numero" placeholder="Número">
-                                    <input type="text" class="form-control" id="esquina" placeholder="Esquina">
-                                </div>
+                        <div class="mb-3">
+                            <label for="departamento" class="form-label">Departamento</label>
+                            <select class="form-select" id="departamento" required>
+                                <option value="">Seleccione un departamento</option>
+                                ${Object.keys(departamentosLocalidades).map(dep => `<option value="${dep}">${dep}</option>`).join("")}
+                            </select>
+
+                            <label for="localidad" class="form-label mt-3">Localidad</label>
+                            <select class="form-select" id="localidad" required disabled>
+                                <option value="">Seleccione una localidad</option>
+                            </select>
+
+                            <label for="calle" class="form-label mt-3">Calle</label>
+                            <input type="text" class="form-control" id="calle" placeholder="Calle" required>
+
+                            <label for="numero" class="form-label mt-3">Número</label>
+                            <input type="text" class="form-control" id="numero" placeholder="Número" required>
+
+                            <label for="esquina" class="form-label mt-3">Esquina</label>
+                            <input type="text" class="form-control" id="esquina" placeholder="Esquina" required>
+                        </div>
                             </form>
                         </div>
                         <div class="tab-pane fade" id="pago" role="tabpanel">
                             <p>Seleccione su forma de pago preferida.</p>
-                            <form>
+                            <form id="pagoForm">
                                 <div class="mb-3">
                                     <label for="formaPago" class="form-label">Forma de Pago</label>
-                                    <select class="form-select" id="formaPago">
+                                    <select class="form-select" id="formaPago" required>
+                                        <option value="">Seleccione una opción</option>
                                         <option value="tarjeta">Tarjeta de Crédito</option>
                                         <option value="transferencia">Transferencia Bancaria</option>
                                     </select>
@@ -217,7 +232,11 @@ function showCheckoutModal() {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="finalizarCompra">Confirmar Pago</button>
+                    <button type="button" class="btn btn-primary" id="atrasPago" style="display: none;">Atrás</button>
+                    <button type="button" class="btn btn-primary" id="siguienteEnvio">Siguiente</button>
+                    <button type="button" class="btn btn-primary" id="atrasCostos" style="display: none;">Atrás</button>
+                    <button type="button" class="btn btn-primary" id="siguientePago" style="display: none;">Siguiente</button>
+                    <button type="button" class="btn btn-primary" id="finalizarCompra" style="display: none;" disabled>Confirmar Pago</button>
                 </div>
             </div>
         </div>
@@ -225,43 +244,143 @@ function showCheckoutModal() {
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Mostrar el modal
     const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
     checkoutModal.show();
 
-    // Asignar eventos para los botones de la lógica de pestañas y cálculo de costos
-    document.getElementById("finalizarCompra").addEventListener("click", function() {
-        alert("Compra finalizada.");
-        document.getElementById("checkoutModal").remove();
+    // Evento para actualizar localidades al seleccionar un departamento
+    document.getElementById("departamento").addEventListener("change", function() {
+        const deptoSeleccionado = this.value;
+        const localidadSelect = document.getElementById("localidad");
+    
+        // Limpiar y habilitar el select de localidades
+        localidadSelect.innerHTML = "<option value=''>Seleccione una localidad</option>";
+        localidadSelect.disabled = !deptoSeleccionado;
+    
+        if (deptoSeleccionado) {
+            const localidades = departamentosLocalidades[deptoSeleccionado];
+            localidades.forEach(localidad => {
+                const option = document.createElement("option");
+                option.value = localidad;
+                option.textContent = localidad;
+                localidadSelect.appendChild(option);
+            });
+            localidadSelect.disabled = false;
+        }
     });
 
-    document.getElementById("tipoEnvio").addEventListener("change", calcularCostos);
-
-    function calcularCostos() {
-        const subtotal = 100; // Este valor vendría de los productos del carrito
-        const tipoEnvio = document.getElementById("tipoEnvio").value;
-        let costoEnvio;
-        
-        if (tipoEnvio === "premium") {
-            costoEnvio = subtotal * 0.15;
-        } else if (tipoEnvio === "express") {
-            costoEnvio = subtotal * 0.07;
+    // Botones de navegación
+    document.getElementById("siguienteEnvio").addEventListener("click", function () {
+        if (validarEnvio()) {
+            mostrarTab("pago-tab");
+            toggleBotones("siguientePago", "atrasPago");
         } else {
-            costoEnvio = subtotal * 0.05;
+            alert("Por favor complete todos los campos de la sección de Envío antes de continuar.");
         }
-        
-        const total = subtotal + costoEnvio;
-        
-        document.getElementById("subtotal").textContent = `$${subtotal}`;
-        document.getElementById("costoEnvio").textContent = `$${costoEnvio.toFixed(2)}`;
-        document.getElementById("total").textContent = `$${total.toFixed(2)}`;
-    }
-}
+    });
 
-// Asignar evento al botón de checkout
-document.getElementById("checkoutButton").addEventListener("click", function () {
-    showCheckoutModal();
+    document.getElementById("siguientePago").addEventListener("click", function () {
+        if (validarPago()) {
+            mostrarTab("costos-tab");
+            toggleBotones("finalizarCompra", "atrasCostos");
+            calcularCostos();
+        } else {
+            alert("Por favor complete todos los campos de la sección de Pago antes de continuar.");
+        }
+    });
+ // Botones de "Atrás"
+ document.getElementById("atrasPago").addEventListener("click", function () {
+    mostrarTab("envio-tab");
+    toggleBotones("siguienteEnvio");
 });
 
+document.getElementById("atrasCostos").addEventListener("click", function () {
+    mostrarTab("pago-tab");
+    toggleBotones("siguientePago", "atrasPago");
+});
 
+document.getElementById("finalizarCompra").addEventListener("click", function () {
+    alert("Compra realizada con éxito.");
+    document.getElementById("checkoutModal").remove();
+});
+
+// Función para cambiar la pestaña activa
+function mostrarTab(tabId) {
+    const tab = new bootstrap.Tab(document.getElementById(tabId));
+    tab.show();
+}
+
+// Función para alternar botones en cada pestaña
+function toggleBotones(botonMostrar, botonAtras) {
+    document.getElementById("siguienteEnvio").style.display = botonMostrar === "siguienteEnvio" ? "inline-block" : "none";
+    document.getElementById("siguientePago").style.display = botonMostrar === "siguientePago" ? "inline-block" : "none";
+    document.getElementById("finalizarCompra").style.display = botonMostrar === "finalizarCompra" ? "inline-block" : "none";
+    document.getElementById("atrasPago").style.display = botonAtras === "atrasPago" ? "inline-block" : "none";
+    document.getElementById("atrasCostos").style.display = botonAtras === "atrasCostos" ? "inline-block" : "none";
+}
+
+// Validaciones
+function validarEnvio() {
+    return [...document.querySelectorAll('#envioForm [required]')].every(input => input.value.trim() !== '');
+}
+
+function validarPago() {
+    return [...document.querySelectorAll('#pagoForm [required]')].every(input => input.value.trim() !== '');
+}
+
+function calcularCostos() {
+    const subtotal = 100; // Este valor vendría de los productos del carrito
+    const tipoEnvio = document.getElementById("tipoEnvio").value;
+    let costoEnvio;
+
+    if (tipoEnvio === "premium") {
+        costoEnvio = subtotal * 0.15;
+    } else if (tipoEnvio === "express") {
+        costoEnvio = subtotal * 0.07;
+    } else {
+        costoEnvio = subtotal * 0.05;
+    }
+
+    const total = subtotal + costoEnvio;
+
+    document.getElementById("subtotal").textContent = `$${subtotal}`;
+    document.getElementById("costoEnvio").textContent = `$${costoEnvio.toFixed(2)}`;
+    document.getElementById("total").textContent = `$${total.toFixed(2)}`;
+}
+}
+
+const departamentosLocalidades = {
+    "Artigas": ["Artigas", "Bella Union", "Pueblo Sequeira", "Topador", "Tomás Gomensoro", "Cuareim", "Baltasar Brum"],
+    "Canelones": ["Ciudad de la Costa", "Las Piedras", "Pando", "Santa Lucía", "Canelones", "Atlántida", "Parque del Plata"],
+    "Cerro Largo": ["Melo", "Fraile Muerto", "Río Branco", "Aceguá", "Isidoro Noblía", "Tupambaé"],
+    "Colonia": ["Colonia del Sacramento", "Juan Lacaze", "Nueva Helvecia", "Nueva Palmira", "Tarariras", "Carmelo"],
+    "Durazno": ["Durazno", "Sarandí del Yí", "Villa del Carmen", "Blanquillo"],
+    "Flores": ["Trinidad", "Ismael Cortinas"],
+    "Florida": ["Florida", "Sarandí Grande", "25 de Mayo", "Casupá", "Fray Marcos"],
+    "Lavalleja": ["Minas", "José Pedro Varela", "Solís de Mataojo"],
+    "Maldonado": ["Maldonado", "San Carlos", "Piriápolis", "Punta del Este", "Pan de Azúcar", "Aiguá", "Punta Ballena", "José Ignacio", "La Barra", "Manantiales", "Ocean Park", "Balneario Buenos Aires", "El Tesoro", "Garzón", "Gregorio Aznárez", "Bella Vista", "Solís", "Playa Hermosa", "Playa Verde", "La Capuera", "Chihuahua", "La Sonrisa"],
+    "Montevideo": [
+      "Ciudad Vieja", "Centro", "Barrio Sur", "Cordón", "Palermo", "Parque Rodó", "Punta Carretas", 
+      "Pocitos", "Buceo", "La Unión", "La Blanqueada", "Parque Batlle", "Villa Dolores", "La Mondiola", "Malvín", 
+      "Malvín Norte", "Punta Gorda", "Carrasco", "Carrasco Norte", "Tres Cruces", "La Comercial", "Villa Muñoz", 
+      "Goes", "Aguada", "Reducto", "Arroyo Seco", "Bella Vista", "La Figurita", "Jacinto Vera", "Larrañaga", "Maroñas", 
+      "Parque Guaraní", "Flor de Maroñas", "Villa Española", "Simón Bolívar", "Brazo Oriental", "Atahualpa", "Prado", 
+      "Capurro", "Paso Molino", "Belvedere", "Sayago", "Paso de las Duranas", "Aires Puros", "Cerrito de la Victoria", 
+      "Pérez Castellanos", "Ituzaingó", "La Cruz de Carrasco", "Bella Italia", "Punta de Rieles", "Nueva España", 
+      "La Chancha", "Jardines del Hipódromo", "Piedras Blancas", "Marconi", "Plácido Ellauri", "Las Acacias", 
+      "Casavalle", "Manga", "Lavalleja", "Peñarol", "Las Retamas", "Conciliación", "Nuevo París", 
+      "La Teja / Pueblo Victoria", "Tres Ombúes", "El Tobogán", "Cerro Norte", "Villa del Cerro", "Casabó", 
+      "Santa Catalina", "La Paloma Tomkinson", "Villa Colón", "Lezica", "Los Bulevares", "Paso de la Arena"
+    ],
+    "Paysandú": ["Paysandú", "Guichón", "Quebracho", "Piedras Coloradas", "Casa Blanca", "Pueblo Gallinal", "Termas de Almirón"],
+    "Río Negro": ["Fray Bentos", "Young", "Nuevo Berlín", "San Javier", "Grecco", "Bellaco", "Menafra"],
+    "Rivera": ["Rivera", "Tranqueras", "Vichadero", "Minas de Corrales", "Masoller"],
+    "Rocha": ["Rocha", "Chuy", "Castillos", "Lascano", "La Paloma", "La Pedrera", "Cabo Polonio", "Barra de Valizas", "Punta del Diablo", "19 de Abril", "Velázquez", "San Luis al Medio"],
+    "Salto": ["Salto", "Constitución", "Belén", "Pueblo Lavalleja", "Rincón de Valentín", "Colonia Itapebí", "Termas del Daymán"],
+    "San José": ["San José de Mayo", "Libertad", "Ciudad del Plata", "Ecilda Paullier", "Raigón", "Rodríguez", "Kiyú-Ordeig"],
+    "Soriano": ["Mercedes", "Dolores", "Cardona", "Palmitas", "Risso", "Santa Catalina", "José Enrique Rodó"],
+    "Tacuarembó": ["Tacuarembó", "Paso de los Toros", "San Gregorio de Polanco", "Ansina", "Las Toscas de Caraguatá", "Achar", "Curtina"],
+    "Treinta y Tres": ["Treinta y Tres", "Vergara", "Santa Clara de Olimar", "Villa Sara", "Rincón", "Charqueada", "Cerro Chato", "José Pedro Varela"]
+  };
+  
+  
 
