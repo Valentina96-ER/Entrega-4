@@ -613,4 +613,21 @@ body.bg-dark .btn-group .goToCart {
   background-position: calc(100% - 10px) center;
 }
 
+/* Keep active buttons and headings in blue */
+#payInUSD.active,
+#payInUYU.active {
+    background-color: #007bff !important; /* Blue color */
+    color: white !important;
+    border-color: #007bff !important;
+}
+
+.text-primary {
+    color: #007bff !important; /* Blue color for headings */
+}
+
+/* Set the total amount to blue */
+#total {
+  color: #28a745 !important; /* Blue color for total amount */
+  font-size: 1.25rem; /* Adjust size if needed */
+}
 
