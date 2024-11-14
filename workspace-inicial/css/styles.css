@@ -451,14 +451,6 @@ body.bg-dark .card { background-color: #343a40;
 /* Estilos para el número (superíndice) */
 #cartCount {
   position: absolute;
-  top: 0px; /* Ajusta la posición vertical más cerca del ícono */
-  right: -5px; /* Ajusta la posición horizontal más cerca del ícono */
-  font-size: 0.75rem; /* Tamaño de fuente más pequeño para que parezca un superíndice */
-  color: white; /* Color del número en negro */
-}
-
-#cartCount {
-  position: absolute;
   background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco ligeramente transparente */
   color:  #343a40; /* Texto gris oscuro para menos contraste */
   width: 16px;
@@ -475,5 +467,167 @@ body.bg-dark .card { background-color: #343a40;
   border: none; /* Sin borde para mantener la simplicidad */
 }
 
+/* Optimized Cart Sidebar Styles */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #f7f7f7;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s;
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
+.cart-sidebar.show {
+  right: 0;
+}
+
+.cart-sidebar h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Cart Item Styles */
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85em;
+}
+
+.cart-item .image {
+  flex: 0 0 40px;
+  padding-right: 8px;
+}
+
+.cart-item .image img {
+  width: 100%;
+  height: auto;
+}
+
+.cart-item .name {
+  flex: 1;
+  text-align: left;
+  font-size: 0.85em;
+}
+
+.cart-item .price,
+.cart-item .currency {
+  font-size: 0.85em;
+}
+
+.cart-item .price {
+  flex: 0 0 55px;
+  text-align: right;
+}
+
+.cart-item .currency {
+  flex: 0 0 35px;
+  text-align: center;
+  margin-right: 6px;
+}
+
+.cart-item .quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.cart-item .quantity span {
+  width: 20px;
+  text-align: center;
+}
+
+.cart-item .quantity .btn {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* Bottom Buttons */
+.cart-sidebar .btn-group {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+}
+
+.cart-sidebar .btn-group button {
+  width: 48%;
+  font-size: 0.85em;
+}
+
+/* Dark Mode Styles */
+body.bg-dark .cart-sidebar {
+  background: #343a40;
+  color: #ffffff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.8);
+}
+
+body.bg-dark .cart-item {
+  border-bottom: 1px solid #444;
+}
+
+body.bg-dark .cart-item .price,
+body.bg-dark .cart-item .currency,
+body.bg-dark .cart-item .name {
+  color: #ffffff;
+}
+
+body.bg-dark .cart-item .quantity .btn {
+  background-color: #444;
+  color: #ffffff;
+}
+
+body.bg-dark .btn-group .goToCart {
+  background-color: #ffc107;
+  color: #333;
+}
+
+/* Contenedor para el campo de entrada y el logo */
+.mb-3 {
+  position: relative;
+}
+
+#numeroTarjeta {
+  --logo-url: none;
+  --logo-display: none;
+  background-image: var(--logo-url);
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px) center;
+}
+
+/* Keep active buttons and headings in blue */
+#payInUSD.active,
+#payInUYU.active {
+    background-color: #007bff !important; /* Blue color */
+    color: white !important;
+    border-color: #007bff !important;
+}
+
+.text-primary {
+    color: #007bff !important; /* Blue color for headings */
+}
+
+/* Set the total amount to blue */
+#total {
+  color: #28a745 !important; /* Blue color for total amount */
+  font-size: 1.25rem; /* Adjust size if needed */
+}
 
