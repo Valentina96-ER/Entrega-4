@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 const product = data;
+                console.log(data);
+
+
                 console.log(product); // Verificar los productos
                 showData(product); // Mostrar el producto
 
@@ -18,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const comment = document.getElementById('rating-text').value;
                     const score = document.getElementById('rating-score').textContent.match(/\d+/)[0]; // Obtiene el valor de la puntuación seleccionada en las estrellas
-                    
+
                     // Obtener los datos del perfil del usuario desde localStorage
                     const userProfile = JSON.parse(localStorage.getItem('userProfile'));
                     const users = JSON.parse(localStorage.getItem('users'));
@@ -28,9 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Verificar si el perfil de usuario tiene firstName y lastName
                     if (userProfile && userProfile.firstName && userProfile.lastName && userProfile.firstName !== '' && userProfile.lastName !== '') {
-                    username = `${userProfile.firstName}_${userProfile.lastName}`; // Combinar el nombre y apellido
+                        username = `${userProfile.firstName}_${userProfile.lastName}`; // Combinar el nombre y apellido
                     } else if (users && users.length > 0 && users[0].email) {
-                    username = users[0].email; // Si no hay nombre, usar el email del primer usuario
+                        username = users[0].email; // Si no hay nombre, usar el email del primer usuario
                     }
                     //const username = localStorage.getItem('username') || 'Usuario Anónimo' 
 
@@ -51,7 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         let storedRatings = JSON.parse(localStorage.getItem(`ratings-${productID}`)) || [];
                         storedRatings.push(newRating); // Agregar la nueva calificación al array de calificaciones almacenadas.
                         localStorage.setItem(`ratings-${productID}`, JSON.stringify(storedRatings)); // Guardar el array actualizado de calificaciones en localStorage.
-
+                        console.log(storedRatings);
+                        console.log(JSON.parse(localStorage.getItem(`ratings-${productID}`)));
+                        
+                        // fetchRatings(); 
+                        // Actualizar el promedio de estrellas
+                        updateAverageStars(storedRatings);
                         // Mostrar la calificación inmediatamente
                         addRatingToDOM(newRating);  // Agregar la nueva calificación al DOM sin recargar la página
 
@@ -71,6 +79,17 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error('No se ha encontrado un productID en el almacenamiento local.');
     }
 });
+function updateAverageStars(ratings) {
+    console.log({ ratings });
+
+    const totalScore = ratings.reduce((sum, rating) => sum + rating.score, 0);
+    const averageScore = totalScore / ratings.length;
+    console.log(totalScore);
+    console.log(averageScore);
+
+    // Renderizar el nuevo promedio de estrellas
+    renderAverageStars(averageScore);
+}
 
 function showData(product) {
     const container = document.getElementById("container");
@@ -139,7 +158,7 @@ function showData(product) {
         </div>
         <!-- Sección de calificaciones -->
         <div id="ratings">
-            <h4 class="mt-4">Calificaciones de los usuarios</h4>
+            <h4 >Calificaciones de los usuarios</h4>
         </div>
         <!-- Formulario para realizar una calificación -->
         <div class="container mt-4">
@@ -169,21 +188,21 @@ function showData(product) {
 
 
         container.innerHTML = productInfoHTML;
- // Asignar evento al botón de compra
-document.getElementById("buy-button").addEventListener("click", function () {
-    const productToCart = {
-        name: product.name,
-        cost: product.cost,
-        currency: product.currency,
-        image: product.images[0], // Usa la primera imagen del array
-        quantity: 1 // La cantidad inicial es 1 cuando el usuario compra
-    };
+        // Asignar evento al botón de compra
+        document.getElementById("buy-button").addEventListener("click", function () {
+            const productToCart = {
+                name: product.name,
+                cost: product.cost,
+                currency: product.currency,
+                image: product.images[0], // Usa la primera imagen del array
+                quantity: 1 // La cantidad inicial es 1 cuando el usuario compra
+            };
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push(productToCart);
-    localStorage.setItem("cart", JSON.stringify(cart)); // Guarda el carrito en el localStorage
-    window.location.href = "cart.html"; // Redirige al carrito
-});
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push(productToCart);
+            localStorage.setItem("cart", JSON.stringify(cart)); // Guarda el carrito en el localStorage
+            window.location.href = "cart.html"; // Redirige al carrito
+        });
 
 
 
@@ -220,11 +239,16 @@ function fetchRatings() {
             const ratingsContainer = document.getElementById('ratings');
 
             let totalScore = 0;  // Variable para almacenar la suma de las calificaciones
-            let numberOfRatings = data.length;  // Número total de calificaciones
+            let storedRatings = JSON.parse(localStorage.getItem(`ratings-${productID}`)) || [];
 
+            data = new Set([...data, ...storedRatings])
             data.forEach(comentario => {
                 const divComentario = document.createElement('div');
                 divComentario.classList.add('ratings-row');
+                console.log(storedRatings);
+                console.log(totalScore);
+                console.log({ comentario });
+
 
                 // Agregar la fecha si está disponible
                 const dateElement = document.createElement('p');
@@ -261,7 +285,7 @@ function fetchRatings() {
             });
 
             // Calcular el promedio de las calificaciones
-            let averageScore = totalScore / numberOfRatings;
+            let averageScore = totalScore / data.size;
             renderAverageStars(averageScore);  // Mostrar las estrellas promedio
         })
         .catch(error => console.error('Error al cargar las calificaciones:', error));
@@ -308,11 +332,10 @@ function addRatingToDOM(rating) {
     const divComentario = document.createElement('div');
     divComentario.classList.add('ratings-row');
 
-     // Mostrar la fecha de la calificación
-     const dateElement = document.createElement('p');
-     console.log(rating);
-     dateElement.textContent = `Fecha: ${rating.date}`; // Mostrar la fecha
-     divComentario.appendChild(dateElement);
+    // Mostrar la fecha de la calificación
+    const dateElement = document.createElement('p');
+    dateElement.textContent = `Fecha: ${rating.date}`; // Mostrar la fecha
+    divComentario.appendChild(dateElement);
 
     // Crear el nombre del usuario
     const userElement = document.createElement('h5');
@@ -336,7 +359,7 @@ function addRatingToDOM(rating) {
     comentarioElement.textContent = rating.description;
     divComentario.appendChild(comentarioElement);
 
-       // Insertar el comentario al contenedor de calificaciones
+    // Insertar el comentario al contenedor de calificaciones
     ratingsContainer.appendChild(divComentario);
 }
 
@@ -360,7 +383,7 @@ function setProductID(id) {
 
 // Función para formatear números con separación de miles
 function formatNumber(num) {
-    return num.toLocaleString('es-ES', { minimumFractionDigits: 0, useGrouping: true});
+    return num.toLocaleString('es-ES', { minimumFractionDigits: 0, useGrouping: true });
 }
-  
+
 

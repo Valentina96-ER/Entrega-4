@@ -434,11 +434,23 @@ body.bg-dark .card { background-color: #343a40;
   border-color: #444; /* Opcional: Cambia el color del borde en modo oscuro si lo deseas */
   }
 
-.bg-dark .row.mb-4.product { background-color: #343a40; 
+.bg-dark .row.product { 
+  background-color: #343a40; 
+  color: white; 
+  border: none;
+  }
+
+ .bg-dark #ratings { 
+    background-color: #343a40; 
+    color: white; 
+    border: none;
+}
+
+.bg-dark .modal-content { 
+  background-color: #343a40; 
   color: white; 
   border: none;
 }
-
 .bg-dark #containerProd h4, .bg-dark #containerProd p {
   color: white; 
 }
@@ -630,4 +642,28 @@ body.bg-dark .btn-group .goToCart {
   color: #28a745 !important; /* Blue color for total amount */
   font-size: 1.25rem; /* Adjust size if needed */
 }
+#ratings {
 
+  margin-top: 1%;
+  padding: 15px;
+  background-color: #f9f9f9; /* Fondo claro */
+  border-radius: 8px; /* Bordes redondeados */
+}
+.ratings-row {
+  padding: 5px;
+  border-bottom: 1px solid #ccc; /* Línea para separar las calificaciones */
+}
+
+.ratings-row p {
+  font-size: 14px; /* Tamaño de fuente ajustado */
+  margin-bottom: 5px;
+}
+
+.ratings-row h5 {
+  margin: 0; /* Eliminar márgenes para el nombre del usuario */
+  font-size: 16px; /* Tamaño de fuente del nombre */
+  font-weight: bold; /* Destacar el nombre del usuario */
+}
+#ratings h4 {
+  font-weight: bolder;
+}

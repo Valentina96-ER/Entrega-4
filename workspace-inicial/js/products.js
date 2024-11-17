@@ -95,7 +95,7 @@ function showData(products) {
       const formattedCost = formatNumber(product.cost);
       const productHTML = `
         <div onclick="setProductID(${product.id})" class="list-group-item list-group-item-action cursor-active">
-          <div class="row mb-4 product">
+          <div class="row product">
             <div class="col-md-3">
               <img src="${product.image}" class="img-fluid" alt="${product.name}">
             </div>

@@ -9,17 +9,17 @@ const departamentosLocalidades = {
     "Lavalleja": ["Minas", "José Pedro Varela", "Solís de Mataojo"],
     "Maldonado": ["Maldonado", "San Carlos", "Piriápolis", "Punta del Este", "Pan de Azúcar", "Aiguá", "Punta Ballena", "José Ignacio", "La Barra", "Manantiales", "Ocean Park", "Balneario Buenos Aires", "El Tesoro", "Garzón", "Gregorio Aznárez", "Bella Vista", "Solís", "Playa Hermosa", "Playa Verde", "La Capuera", "Chihuahua", "La Sonrisa"],
     "Montevideo": [
-      "Ciudad Vieja", "Centro", "Barrio Sur", "Cordón", "Palermo", "Parque Rodó", "Punta Carretas", 
-      "Pocitos", "Buceo", "La Unión", "La Blanqueada", "Parque Batlle", "Villa Dolores", "La Mondiola", "Malvín", 
-      "Malvín Norte", "Punta Gorda", "Carrasco", "Carrasco Norte", "Tres Cruces", "La Comercial", "Villa Muñoz", 
-      "Goes", "Aguada", "Reducto", "Arroyo Seco", "Bella Vista", "La Figurita", "Jacinto Vera", "Larrañaga", "Maroñas", 
-      "Parque Guaraní", "Flor de Maroñas", "Villa Española", "Simón Bolívar", "Brazo Oriental", "Atahualpa", "Prado", 
-      "Capurro", "Paso Molino", "Belvedere", "Sayago", "Paso de las Duranas", "Aires Puros", "Cerrito de la Victoria", 
-      "Pérez Castellanos", "Ituzaingó", "La Cruz de Carrasco", "Bella Italia", "Punta de Rieles", "Nueva España", 
-      "La Chancha", "Jardines del Hipódromo", "Piedras Blancas", "Marconi", "Plácido Ellauri", "Las Acacias", 
-      "Casavalle", "Manga", "Lavalleja", "Peñarol", "Las Retamas", "Conciliación", "Nuevo París", 
-      "La Teja / Pueblo Victoria", "Tres Ombúes", "El Tobogán", "Cerro Norte", "Villa del Cerro", "Casabó", 
-      "Santa Catalina", "La Paloma Tomkinson", "Villa Colón", "Lezica", "Los Bulevares", "Paso de la Arena"
+        "Ciudad Vieja", "Centro", "Barrio Sur", "Cordón", "Palermo", "Parque Rodó", "Punta Carretas",
+        "Pocitos", "Buceo", "La Unión", "La Blanqueada", "Parque Batlle", "Villa Dolores", "La Mondiola", "Malvín",
+        "Malvín Norte", "Punta Gorda", "Carrasco", "Carrasco Norte", "Tres Cruces", "La Comercial", "Villa Muñoz",
+        "Goes", "Aguada", "Reducto", "Arroyo Seco", "Bella Vista", "La Figurita", "Jacinto Vera", "Larrañaga", "Maroñas",
+        "Parque Guaraní", "Flor de Maroñas", "Villa Española", "Simón Bolívar", "Brazo Oriental", "Atahualpa", "Prado",
+        "Capurro", "Paso Molino", "Belvedere", "Sayago", "Paso de las Duranas", "Aires Puros", "Cerrito de la Victoria",
+        "Pérez Castellanos", "Ituzaingó", "La Cruz de Carrasco", "Bella Italia", "Punta de Rieles", "Nueva España",
+        "La Chancha", "Jardines del Hipódromo", "Piedras Blancas", "Marconi", "Plácido Ellauri", "Las Acacias",
+        "Casavalle", "Manga", "Lavalleja", "Peñarol", "Las Retamas", "Conciliación", "Nuevo París",
+        "La Teja / Pueblo Victoria", "Tres Ombúes", "El Tobogán", "Cerro Norte", "Villa del Cerro", "Casabó",
+        "Santa Catalina", "La Paloma Tomkinson", "Villa Colón", "Lezica", "Los Bulevares", "Paso de la Arena"
     ],
     "Paysandú": ["Paysandú", "Guichón", "Quebracho", "Piedras Coloradas", "Casa Blanca", "Pueblo Gallinal", "Termas de Almirón"],
     "Río Negro": ["Fray Bentos", "Young", "Nuevo Berlín", "San Javier", "Grecco", "Bellaco", "Menafra"],
@@ -30,9 +30,9 @@ const departamentosLocalidades = {
     "Soriano": ["Mercedes", "Dolores", "Cardona", "Palmitas", "Risso", "Santa Catalina", "José Enrique Rodó"],
     "Tacuarembó": ["Tacuarembó", "Paso de los Toros", "San Gregorio de Polanco", "Ansina", "Las Toscas de Caraguatá", "Achar", "Curtina"],
     "Treinta y Tres": ["Treinta y Tres", "Vergara", "Santa Clara de Olimar", "Villa Sara", "Rincón", "Charqueada", "Cerro Chato", "José Pedro Varela"]
-  };
+};
 
-  
+
 document.addEventListener("DOMContentLoaded", function () {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     let totalUSD = 0;
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
             renderCart();
         });
 
-    // Evento para actualizar el subtotal y los totales cuando se cambia la cantidad
+        // Evento para actualizar el subtotal y los totales cuando se cambia la cantidad
         document.getElementById(`quantity${index}`).addEventListener("input", function () {
             const newQuantity = parseInt(this.value);
             if (isNaN(newQuantity) || newQuantity < 1) return;
@@ -179,8 +179,10 @@ function formatNumber(num) {
 
 // Función para mostrar el pop-up modal
 function showCheckoutModal() {
+    const darkMode = localStorage.getItem('darkMode') === "true"
+    console.log(localStorage.getItem('darkMode'))
     const modalHTML = `
-    <div class="modal" id="checkoutModal" tabindex="-1">
+    <div class="${darkMode ? "bg-dark" : ""} modal" id="checkoutModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -332,7 +334,7 @@ function showCheckoutModal() {
     checkoutModal.show();
 
     // Show additional message and email option when "Transferencia Bancaria" is selected
-    document.getElementById("formaPago").addEventListener("change", function() {
+    document.getElementById("formaPago").addEventListener("change", function () {
         const tarjetaCampos = document.getElementById("tarjetaCampos");
         const transferenciaMensaje = document.getElementById("transferenciaMensaje");
 
@@ -349,7 +351,7 @@ function showCheckoutModal() {
     });
 
     // Formateo del número de tarjeta y validación de entrada
-    document.getElementById('numeroTarjeta').addEventListener('input', function() {
+    document.getElementById('numeroTarjeta').addEventListener('input', function () {
         let numero = this.value.replace(/\D/g, ''); // Remover caracteres no numéricos
         numero = numero.substring(0, 16); // Limitar a 16 dígitos
         this.value = numero.replace(/(\d{4})(?=\d)/g, '$1 '); // Formatear en grupos de 4
@@ -362,7 +364,7 @@ function showCheckoutModal() {
             this.style.backgroundImage = 'none'; // Remueve el logo si el tipo no es reconocido
         }
     });
-    
+
     // Función para detectar el tipo de tarjeta basado en los primeros dígitos
     function detectarTipoTarjeta(numero) {
         const patrones = {
@@ -380,39 +382,39 @@ function showCheckoutModal() {
         }
         return 'desconocida';
     }
-    
+
     // Validación de entrada de fecha de expiración
-    document.getElementById('fechaExpiracion').addEventListener('input', function() {
+    document.getElementById('fechaExpiracion').addEventListener('input', function () {
         const soloNumeros = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d{0,2})$/, '$1/$2');
         this.value = soloNumeros;
-    
+
         const [mes, anio] = soloNumeros.split('/').map(num => parseInt(num, 10) || 0); // Manejo de errores en caso de split vacío
-    
+
         const fechaActual = new Date();
         const mesActual = fechaActual.getMonth() + 1;
         const anioActual = parseInt(fechaActual.getFullYear().toString().slice(-2), 10);
         const anioLimite = anioActual + 10;
-    
+
         document.getElementById("fechaExpiracionWarning").style.display =
             (mes < 1 || mes > 12 || anio < anioActual || anio > anioLimite || (anio === anioActual && mes <= mesActual))
                 ? "block" : "none";
     });
-    
+
     // Validación para el campo CVV, limitando a solo números y longitud de 3
-    document.getElementById('codigoCVV').addEventListener('input', function() {
+    document.getElementById('codigoCVV').addEventListener('input', function () {
         this.value = this.value.replace(/\D/g, '').substring(0, 3); // Limitar a 3 dígitos numéricos
         document.getElementById("codigoCVVWarning").style.display = this.value.length < 3 ? "block" : "none";
     });
-  
+
     // Evento para actualizar localidades al seleccionar un departamento
-    document.getElementById("departamento").addEventListener("change", function() {
+    document.getElementById("departamento").addEventListener("change", function () {
         const deptoSeleccionado = this.value;
         const localidadSelect = document.getElementById("localidad");
-    
+
         // Limpiar y habilitar el select de localidades
         localidadSelect.innerHTML = "<option value=''>Seleccione una localidad</option>";
         localidadSelect.disabled = !deptoSeleccionado;
-    
+
         if (deptoSeleccionado) {
             const localidades = departamentosLocalidades[deptoSeleccionado];
             localidades.forEach(localidad => {
@@ -440,7 +442,7 @@ function showCheckoutModal() {
         // Validate "pago" form fields and currency selection
         const isPayInUSDActive = document.getElementById("payInUSD").classList.contains("active");
         const isPayInUYUActive = document.getElementById("payInUYU").classList.contains("active");
-        
+
         if (isPayInUSDActive || isPayInUYUActive) {
             mostrarTab("pago-tab");  // Move to the "Pago" tab after validation
             toggleBotones("finalizarCompra", "atrasPago");
@@ -448,7 +450,7 @@ function showCheckoutModal() {
         } else {
             alert("Por favor, complete todos los campos de la sección de Pago y seleccione una moneda antes de continuar.");
         }
-    });    
+    });
 
     // Botones de "Atrás"
     document.getElementById("atrasCostos").addEventListener("click", function () {
@@ -464,7 +466,7 @@ function showCheckoutModal() {
     document.getElementById("finalizarCompra").addEventListener("click", function () {
         if (validarPago()) {
             alert("¡Felicidades! Tu compra fue exitosa 🎉. Gracias por confiar en nosotres. Revisá tu correo electrónico para los detalles y próxima información de entrega. ¡Que disfrutes tu compra!");
-    
+
             localStorage.removeItem("cart");
             localStorage.setItem("cartCount", 0);
 
@@ -474,95 +476,95 @@ function showCheckoutModal() {
         } else {
             alert("Por favor complete los campos faltantes.");
         }
-    });    
-
-// Función para cambiar la pestaña activa
-function mostrarTab(tabId) {
-    const tab = new bootstrap.Tab(document.getElementById(tabId));
-    tab.show();
-}
-
-// Función para alternar botones en cada pestaña
-function toggleBotones(botonMostrar, botonAtras) {
-    document.getElementById("siguienteEnvio").style.display = botonMostrar === "siguienteEnvio" ? "inline-block" : "none";
-    document.getElementById("siguienteCostos").style.display = botonMostrar === "siguienteCostos" ? "inline-block" : "none";
-    document.getElementById("finalizarCompra").style.display = botonMostrar === "finalizarCompra" ? "inline-block" : "none";
-    document.getElementById("atrasCostos").style.display = botonAtras === "atrasCostos" ? "inline-block" : "none";
-    document.getElementById("atrasPago").style.display = botonAtras === "atrasPago" ? "inline-block" : "none";
-}
-
-// Validaciones
-function validarEnvio() {
-    return [...document.querySelectorAll('#envioForm [required]')].every(input => input.value.trim() !== '');
-}
-
-function validarPago() {
-    const tarjetaCamposValid = [...document.querySelectorAll('#tarjetaCampos [required]')].every(input => input.value.trim() !== '');
-    const correoCheckboxChecked = document.getElementById('enviarCorreoCheckbox').checked;
-    
-    return tarjetaCamposValid || correoCheckboxChecked;
-}
-
-// Exchange rate (1 USD = 40 UYU)
-const exchangeRate = 40;
-
-// Event listeners for currency selection buttons
-document.getElementById("payInUSD").addEventListener("click", function() {
-    this.classList.add("active");
-    document.getElementById("payInUYU").classList.remove("active");
-    calcularCostos("USD");
-});
-
-document.getElementById("payInUYU").addEventListener("click", function() {
-    this.classList.add("active");
-    document.getElementById("payInUSD").classList.remove("active");
-    calcularCostos("UYU");
-});
-
-function calcularCostos(currency) {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const tipoEnvio = document.getElementById("tipoEnvio").value;
-    let costoEnvio = 0;
-    let subtotalUSD = 0;
-    let subtotalUYU = 0;
-
-    // Calculate subtotal for each currency
-    cart.forEach(product => {
-        if (product.currency === "USD") {
-            subtotalUSD += product.cost * product.quantity;
-        } else if (product.currency === "UYU") {
-            subtotalUYU += product.cost * product.quantity;
-        }
     });
 
-    // Calculate shipping cost based on selected option in USD
-    const baseSubtotal = subtotalUSD + subtotalUYU / exchangeRate;
-    if (tipoEnvio === "premium") {
-        costoEnvio = baseSubtotal * 0.15;
-    } else if (tipoEnvio === "express") {
-        costoEnvio = baseSubtotal * 0.07;
-    } else {
-        costoEnvio = baseSubtotal * 0.05;
+    // Función para cambiar la pestaña activa
+    function mostrarTab(tabId) {
+        const tab = new bootstrap.Tab(document.getElementById(tabId));
+        tab.show();
     }
 
-    // Calculate total based on chosen currency
-    let total = 0;
-    if (currency === "USD") {
-        total = subtotalUSD + (subtotalUYU / exchangeRate) + costoEnvio;
-        document.getElementById("subtotal").textContent = `$${formatNumber(subtotalUSD)} + ${formatNumber(subtotalUYU / exchangeRate)} (conv. a USD)`;
-        document.getElementById("costoEnvio").textContent = `$${formatNumber(costoEnvio)}`;
-        document.getElementById("total").textContent = `$${formatNumber(total)}`;
-    } else if (currency === "UYU") {
-        const subtotalUYUConverted = subtotalUSD * exchangeRate + subtotalUYU;
-        const costoEnvioUYU = costoEnvio * exchangeRate;
-        total = subtotalUYUConverted + costoEnvioUYU;
-        document.getElementById("subtotal").textContent = `$${formatNumber(subtotalUYU)} + ${formatNumber(subtotalUSD * exchangeRate)} (conv. a UYU)`;
-        document.getElementById("costoEnvio").textContent = `$${formatNumber(costoEnvioUYU)}`;
-        document.getElementById("total").textContent = `$${formatNumber(total)}`;
+    // Función para alternar botones en cada pestaña
+    function toggleBotones(botonMostrar, botonAtras) {
+        document.getElementById("siguienteEnvio").style.display = botonMostrar === "siguienteEnvio" ? "inline-block" : "none";
+        document.getElementById("siguienteCostos").style.display = botonMostrar === "siguienteCostos" ? "inline-block" : "none";
+        document.getElementById("finalizarCompra").style.display = botonMostrar === "finalizarCompra" ? "inline-block" : "none";
+        document.getElementById("atrasCostos").style.display = botonAtras === "atrasCostos" ? "inline-block" : "none";
+        document.getElementById("atrasPago").style.display = botonAtras === "atrasPago" ? "inline-block" : "none";
+    }
+
+    // Validaciones
+    function validarEnvio() {
+        return [...document.querySelectorAll('#envioForm [required]')].every(input => input.value.trim() !== '');
+    }
+
+    function validarPago() {
+        const tarjetaCamposValid = [...document.querySelectorAll('#tarjetaCampos [required]')].every(input => input.value.trim() !== '');
+        const correoCheckboxChecked = document.getElementById('enviarCorreoCheckbox').checked;
+
+        return tarjetaCamposValid || correoCheckboxChecked;
+    }
+
+    // Exchange rate (1 USD = 40 UYU)
+    const exchangeRate = 40;
+
+    // Event listeners for currency selection buttons
+    document.getElementById("payInUSD").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("payInUYU").classList.remove("active");
+        calcularCostos("USD");
+    });
+
+    document.getElementById("payInUYU").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("payInUSD").classList.remove("active");
+        calcularCostos("UYU");
+    });
+
+    function calcularCostos(currency) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const tipoEnvio = document.getElementById("tipoEnvio").value;
+        let costoEnvio = 0;
+        let subtotalUSD = 0;
+        let subtotalUYU = 0;
+
+        // Calculate subtotal for each currency
+        cart.forEach(product => {
+            if (product.currency === "USD") {
+                subtotalUSD += product.cost * product.quantity;
+            } else if (product.currency === "UYU") {
+                subtotalUYU += product.cost * product.quantity;
+            }
+        });
+
+        // Calculate shipping cost based on selected option in USD
+        const baseSubtotal = subtotalUSD + subtotalUYU / exchangeRate;
+        if (tipoEnvio === "premium") {
+            costoEnvio = baseSubtotal * 0.15;
+        } else if (tipoEnvio === "express") {
+            costoEnvio = baseSubtotal * 0.07;
+        } else {
+            costoEnvio = baseSubtotal * 0.05;
+        }
+
+        // Calculate total based on chosen currency
+        let total = 0;
+        if (currency === "USD") {
+            total = subtotalUSD + (subtotalUYU / exchangeRate) + costoEnvio;
+            document.getElementById("subtotal").textContent = `$${formatNumber(subtotalUSD)} + ${formatNumber(subtotalUYU / exchangeRate)} (conv. a USD)`;
+            document.getElementById("costoEnvio").textContent = `$${formatNumber(costoEnvio)}`;
+            document.getElementById("total").textContent = `$${formatNumber(total)}`;
+        } else if (currency === "UYU") {
+            const subtotalUYUConverted = subtotalUSD * exchangeRate + subtotalUYU;
+            const costoEnvioUYU = costoEnvio * exchangeRate;
+            total = subtotalUYUConverted + costoEnvioUYU;
+            document.getElementById("subtotal").textContent = `$${formatNumber(subtotalUYU)} + ${formatNumber(subtotalUSD * exchangeRate)} (conv. a UYU)`;
+            document.getElementById("costoEnvio").textContent = `$${formatNumber(costoEnvioUYU)}`;
+            document.getElementById("total").textContent = `$${formatNumber(total)}`;
+        }
     }
 }
-}
 
-  
-  
+
+
 
