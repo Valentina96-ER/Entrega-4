@@ -138,9 +138,9 @@ function showData(product) {
             </div>
         </div>
         <!-- Sección de calificaciones -->
-          <h4 class="mt-4">Calificaciones de los usuarios</h4>
-            <div id="ratings"></div>
-             </div> 
+        <div id="ratings">
+            <h4 class="mt-4">Calificaciones de los usuarios</h4>
+        </div>
         <!-- Formulario para realizar una calificación -->
         <div class="container mt-4">
             <h4>Deja tu calificación</h4>
@@ -269,22 +269,36 @@ function fetchRatings() {
 
 // Función para renderizar las estrellas basadas en el promedio
 function renderAverageStars(averageScore) {
-    console.log('Average score:', averageScore);  // Para verificar el promedio de estrellas
+    console.log('Average score:', averageScore); // Para verificar el promedio de estrellas
 
     const starsContainer = document.getElementById('average-stars-container');
-    starsContainer.innerHTML = '';  // Limpiar el contenedor antes de añadir nuevas estrellas
+    starsContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nuevas estrellas
 
-    const roundedAverage = Math.round(averageScore);  // Redondear el promedio
+    const roundedAverage = Math.round(averageScore); // Redondear el promedio
 
     // Crear las estrellas para el promedio
     for (let i = 0; i < 5; i++) {
         const estrella = document.createElement('span');
         estrella.classList.add('fa', 'fa-star');
         if (i < roundedAverage) {
-            estrella.classList.add('checked');  // Estrella activa
+            estrella.classList.add('checked'); // Estrella activa
         }
         starsContainer.appendChild(estrella);
     }
+
+    // Añadir evento de clic para redirigir a la sección de calificaciones
+    starsContainer.style.cursor = 'pointer'; // Cambiar el cursor al pasar sobre las estrellas
+    starsContainer.addEventListener('click', () => {
+        const ratingsSection = document.getElementById('ratings'); // Seleccionar la sección de calificaciones
+        if (ratingsSection) {
+            ratingsSection.scrollIntoView({
+                behavior: 'smooth', // Desplazamiento suave
+                block: 'start'      // Alinear al inicio de la sección
+            });
+        } else {
+            console.error('No se encontró la sección de calificaciones.');
+        }
+    });
 }
 
 

@@ -264,7 +264,6 @@ function showCheckoutModal() {
                                     <div class="mb-3" style="position: relative;">
                                         <label for="numeroTarjeta" class="form-label">Número de Tarjeta</label>
                                         <input type="text" class="form-control" id="numeroTarjeta" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                                        <small id="numeroTarjetaWarning" class="text-danger" style="display:none;">Solo se permiten números</small>
                                         <img id="logoTarjeta" src="" alt="" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 30px; height: auto;">
                                     </div>
                                     <div class="mb-3">
@@ -362,9 +361,6 @@ function showCheckoutModal() {
         } else {
             this.style.backgroundImage = 'none'; // Remueve el logo si el tipo no es reconocido
         }
-
-        // Mostrar advertencia si se ingresan caracteres no numéricos (sin contar espacios)
-        document.getElementById("numeroTarjetaWarning").style.display = /\D/.test(numero) ? "block" : "none";
     });
     
     // Función para detectar el tipo de tarjeta basado en los primeros dígitos
@@ -390,7 +386,8 @@ function showCheckoutModal() {
         const soloNumeros = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d{0,2})$/, '$1/$2');
         this.value = soloNumeros;
     
-        const [mes, anio] = this.value.split('/').map(num => parseInt(num, 10));
+        const [mes, anio] = soloNumeros.split('/').map(num => parseInt(num, 10) || 0); // Manejo de errores en caso de split vacío
+    
         const fechaActual = new Date();
         const mesActual = fechaActual.getMonth() + 1;
         const anioActual = parseInt(fechaActual.getFullYear().toString().slice(-2), 10);
