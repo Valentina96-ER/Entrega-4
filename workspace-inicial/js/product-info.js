@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     if (productID) {
-        fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
+        fetch(`http://localhost:3000/products/${productID}`)
             .then(response => response.json())
             .then(data => {
                 const product = data;
@@ -233,7 +233,7 @@ function updateRating(rating) {
 }
 
 function fetchRatings() {
-    fetch(`https://japceibal.github.io/emercado-api/products_comments/${productID}.json`)
+    fetch(`http://localhost:3000/products_comments/${productID}`)
         .then(response => response.json())
         .then(data => {
             const ratingsContainer = document.getElementById('ratings');

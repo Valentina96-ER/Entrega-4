@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
   let products = [];
 
   if (catID) {
-    fetch(`https://japceibal.github.io/emercado-api/cats_products/${catID}.json`)
+    fetch(`http://localhost:3000/cats_products/${catID}`)
       .then(response => response.json())
       .then(data => {
         document.querySelector('.lead').textContent = `Verás aquí todos los productos de la categoría ${data.catName}.`;
