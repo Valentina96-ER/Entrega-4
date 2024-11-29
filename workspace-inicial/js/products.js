@@ -1,9 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
   const catID = localStorage.getItem("catID");
+  const token = localStorage.getItem('token');  // Obtener el token de localStorage
   let products = [];
 
   if (catID) {
-    fetch(`http://localhost:3000/cats_products/${catID}`)
+    fetch(`http://localhost:3000/cats_products/${catID}`, {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${token}`  // Enviar el token en el encabezado Authorization
+      }
+  })
       .then(response => response.json())
       .then(data => {
         document.querySelector('.lead').textContent = `Verás aquí todos los productos de la categoría ${data.catName}.`;

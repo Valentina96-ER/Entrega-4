@@ -1,9 +1,18 @@
 const productID = localStorage.getItem("productID");
+
+const token = localStorage.getItem('token');  // Obtener el token de localStorage
+
 document.addEventListener("DOMContentLoaded", function () {
 
 
     if (productID) {
-        fetch(`http://localhost:3000/products/${productID}`)
+        fetch(`http://localhost:3000/products/${productID}`, 
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`  // Enviar el token en el encabezado Authorization
+                }
+            })
             .then(response => response.json())
             .then(data => {
                 const product = data;
@@ -233,7 +242,12 @@ function updateRating(rating) {
 }
 
 function fetchRatings() {
-    fetch(`http://localhost:3000/products_comments/${productID}`)
+    fetch(`http://localhost:3000/products_comments/${productID}`,{
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`  // Enviar el token en el encabezado Authorization
+        }
+    })
         .then(response => response.json())
         .then(data => {
             const ratingsContainer = document.getElementById('ratings');
